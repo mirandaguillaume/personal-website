@@ -1,0 +1,29 @@
+---
+import { languages, defaultLang, showDefaultLang } from '../i18n/ui';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+function homeUrlFor(target: Lang) {
+  return !showDefaultLang && target === defaultLang ? '/' : `/${target}/`;
+}
+---
+
+<ul class="language-switcher">
+  {
+    Object.entries(languages).map(([code, label]) => (
+      <li>
+        <a
+          href={homeUrlFor(code as Lang)}
+          aria-current={code === lang ? 'true' : undefined}
+        >
+          {label}
+        </a>
+      </li>
+    ))
+  }
+</ul>
