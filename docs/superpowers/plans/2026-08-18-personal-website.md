@@ -27,9 +27,11 @@
 ### Task 1: Scaffold du projet Astro
 
 **Files:**
+
 - Create: tout le projet Astro à la racine (`package.json`, `astro.config.mjs`, `tsconfig.json`, `.gitignore`, `public/favicon.svg`, `src/pages/index.astro`) via le CLI officiel — pas de code à écrire à la main dans cette tâche.
 
 **Interfaces:**
+
 - Produces: un projet Astro fonctionnel (`npm run dev`, `npm run build`) avec TypeScript strict (`tsconfig.json` → `"extends": "astro/tsconfigs/strict"`), consommé par toutes les tâches suivantes.
 
 - [ ] **Step 1: Scaffolder le projet dans le dossier courant**
@@ -60,12 +62,14 @@ git commit -m "Scaffold du projet Astro"
 ### Task 2: Outillage qualité — ESLint + Prettier
 
 **Files:**
+
 - Create: `eslint.config.mjs`
 - Create: `.prettierrc.mjs`
 - Create: `.prettierignore`
 - Modify: `package.json` (scripts + devDependencies)
 
 **Interfaces:**
+
 - Consumes: le projet scaffoldé par la Task 1.
 - Produces: scripts npm `check`, `lint`, `format`, `format:check` utilisés dans le processus de vérification de toutes les tâches suivantes.
 
@@ -156,6 +160,7 @@ git commit -m "Ajout de l'outillage ESLint et Prettier"
 ### Task 3: i18n, dictionnaire de traduction et layout de base
 
 **Files:**
+
 - Modify: `astro.config.mjs`
 - Create: `src/i18n/ui.ts`
 - Create: `src/i18n/utils.ts`
@@ -168,6 +173,7 @@ git commit -m "Ajout de l'outillage ESLint et Prettier"
 - Create: `src/pages/en/index.astro` (placeholder minimal, même raison)
 
 **Interfaces:**
+
 - Produces:
   - `Lang` type (`'fr' | 'en'`), exporté depuis `src/i18n/ui.ts` — utilisé par tous les composants et pages des tâches suivantes.
   - `useTranslations(lang: Lang): (key) => string` et `useTranslatedPath(lang: Lang): (path: string) => string`, exportés depuis `src/i18n/utils.ts`.
@@ -396,14 +402,20 @@ function homeUrlFor(target: Lang) {
   return !showDefaultLang && target === defaultLang ? '/' : `/${target}/`;
 }
 ---
+
 <ul class="language-switcher">
-  {Object.entries(languages).map(([code, label]) => (
-    <li>
-      <a href={homeUrlFor(code as Lang)} aria-current={code === lang ? 'true' : undefined}>
-        {label}
-      </a>
-    </li>
-  ))}
+  {
+    Object.entries(languages).map(([code, label]) => (
+      <li>
+        <a
+          href={homeUrlFor(code as Lang)}
+          aria-current={code === lang ? 'true' : undefined}
+        >
+          {label}
+        </a>
+      </li>
+    ))
+  }
 </ul>
 ```
 
@@ -425,6 +437,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
+
 <header class="site-header">
   <nav class="site-nav">
     <a class="site-nav__brand" href={translatePath('/')}>{t('nav.home')}</a>
@@ -455,6 +468,7 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
+
 <footer class="site-footer">
   <p>&copy; {year} — {t('footer.rights')}</p>
 </footer>
@@ -479,6 +493,7 @@ interface Props {
 
 const { lang, title, description } = Astro.props;
 ---
+
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
@@ -504,6 +519,7 @@ Remplacer le contenu de `src/pages/index.astro` :
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
+
 <BaseLayout lang="fr" title="Accueil" description="Site personnel.">
   <h1>Accueil (FR)</h1>
 </BaseLayout>
@@ -515,6 +531,7 @@ Créer `src/pages/en/index.astro` :
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
+
 <BaseLayout lang="en" title="Home" description="Personal website.">
   <h1>Home (EN)</h1>
 </BaseLayout>
@@ -543,6 +560,7 @@ git commit -m "Ajout du routing i18n, du dictionnaire de traduction et du layout
 ### Task 4: Content collections — blog, projets, expérience
 
 **Files:**
+
 - Create: `src/content.config.ts`
 - Create: `src/content/blog/fr/bienvenue-sur-mon-blog.md`
 - Create: `src/content/blog/fr/pourquoi-astro.md`
@@ -551,6 +569,7 @@ git commit -m "Ajout du routing i18n, du dictionnaire de traduction et du layout
 - Create: `src/data/experience.json`
 
 **Interfaces:**
+
 - Produces: collections `blogFr`, `blogEn` (schéma : `title: string`, `description: string`, `pubDate: Date`, `tags: string[]`), `projects` (schéma : `title: { fr, en }`, `description: { fr, en }`, `tags: string[]`, `url?: string`, `repoUrl?: string`), `experience` (schéma : `role: { fr, en }`, `organization: string`, `startDate: Date`, `endDate?: Date`, `description: { fr, en }`). Consommées via `getCollection('blogFr' | 'blogEn' | 'projects' | 'experience')` dans toutes les pages des tâches suivantes.
 
 - [ ] **Step 1: Définir les collections avec leurs schémas Zod**
@@ -612,10 +631,10 @@ Créer `src/content/blog/fr/bienvenue-sur-mon-blog.md` :
 
 ```md
 ---
-title: "Bienvenue sur mon blog"
+title: 'Bienvenue sur mon blog'
 description: "Pourquoi j'ai créé ce site et ce que vous y trouverez."
 pubDate: 2026-08-01
-tags: ["carriere"]
+tags: ['carriere']
 ---
 
 Ceci est un article d'exemple. Remplace ce contenu par ton premier vrai article.
@@ -628,7 +647,7 @@ Créer `src/content/blog/fr/pourquoi-astro.md` :
 title: "Pourquoi j'ai choisi Astro pour ce site"
 description: "Retour d'expérience sur le choix technique de ce blog."
 pubDate: 2026-08-10
-tags: ["astro", "typescript"]
+tags: ['astro', 'typescript']
 ---
 
 Ceci est un article d'exemple. Remplace ce contenu par ton propre retour d'expérience.
@@ -638,10 +657,10 @@ Créer `src/content/blog/en/hello-world.md` (volontairement un seul article en a
 
 ```md
 ---
-title: "Hello, world"
+title: 'Hello, world'
 description: "Why I built this site and what you'll find here."
 pubDate: 2026-08-01
-tags: ["career"]
+tags: ['career']
 ---
 
 This is a sample post. Replace this content with your first real article.
@@ -736,10 +755,12 @@ git commit -m "Ajout des content collections (blog, projets, expérience) et don
 ### Task 5: Composants TagPill et ArticleCard
 
 **Files:**
+
 - Create: `src/components/TagPill.astro`
 - Create: `src/components/ArticleCard.astro`
 
 **Interfaces:**
+
 - Consumes: `Lang` (Task 3).
 - Produces: `TagPill` (props `{ tag: string; href: string }`) et `ArticleCard` (props `{ title: string; description: string; pubDate: Date; tags: string[]; href: string; lang: Lang }`) — utilisés par les pages de blog (Task 6), les pages de tags (Task 7) et la page d'accueil (Task 12).
 
@@ -756,6 +777,7 @@ interface Props {
 
 const { tag, href } = Astro.props;
 ---
+
 <a class="tag-pill" href={href}>{tag}</a>
 ```
 
@@ -778,21 +800,23 @@ interface Props {
 }
 
 const { title, description, pubDate, tags, href, lang } = Astro.props;
-const formattedDate = pubDate.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+const formattedDate = pubDate.toLocaleDateString(
+  lang === 'fr' ? 'fr-FR' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  },
+);
 const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
 ---
+
 <article class="article-card">
   <p class="article-card__date">{formattedDate}</p>
   <h2 class="article-card__title"><a href={href}>{title}</a></h2>
   <p>{description}</p>
   <div>
-    {tags.map((tag) => (
-      <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />
-    ))}
+    {tags.map((tag) => <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />)}
   </div>
 </article>
 ```
@@ -814,10 +838,12 @@ git commit -m "Ajout des composants TagPill et ArticleCard"
 ### Task 6: Pages de liste du blog
 
 **Files:**
+
 - Create: `src/pages/blog/index.astro`
 - Create: `src/pages/en/blog/index.astro`
 
 **Interfaces:**
+
 - Consumes: `blogFr`/`blogEn` (Task 4), `ArticleCard` (Task 5), `BaseLayout` (Task 3).
 
 - [ ] **Step 1: Écrire la page de liste du blog (FR)**
@@ -834,18 +860,25 @@ const posts = (await getCollection('blogFr')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
-<BaseLayout lang="fr" title="Articles" description="Liste des articles du blog.">
+
+<BaseLayout
+  lang="fr"
+  title="Articles"
+  description="Liste des articles du blog."
+>
   <h1>Articles</h1>
-  {posts.map((post) => (
-    <ArticleCard
-      title={post.data.title}
-      description={post.data.description}
-      pubDate={post.data.pubDate}
-      tags={post.data.tags}
-      href={`/blog/${post.id}/`}
-      lang="fr"
-    />
-  ))}
+  {
+    posts.map((post) => (
+      <ArticleCard
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        href={`/blog/${post.id}/`}
+        lang="fr"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -863,18 +896,21 @@ const posts = (await getCollection('blogEn')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
+
 <BaseLayout lang="en" title="Blog" description="List of blog articles.">
   <h1>Blog</h1>
-  {posts.map((post) => (
-    <ArticleCard
-      title={post.data.title}
-      description={post.data.description}
-      pubDate={post.data.pubDate}
-      tags={post.data.tags}
-      href={`/en/blog/${post.id}/`}
-      lang="en"
-    />
-  ))}
+  {
+    posts.map((post) => (
+      <ArticleCard
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        href={`/en/blog/${post.id}/`}
+        lang="en"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -901,11 +937,13 @@ git commit -m "Ajout des pages de liste du blog"
 ### Task 7: Page article individuel (route dynamique)
 
 **Files:**
+
 - Create: `src/layouts/ArticleLayout.astro`
 - Create: `src/pages/blog/[id].astro`
 - Create: `src/pages/en/blog/[id].astro`
 
 **Interfaces:**
+
 - Consumes: `blogFr`/`blogEn` (Task 4), `TagPill` (Task 5), `BaseLayout` (Task 3).
 - Produces: `ArticleLayout` avec props `{ post: CollectionEntry<'blogFr'> | CollectionEntry<'blogEn'>; lang: Lang }`.
 
@@ -928,21 +966,31 @@ interface Props {
 
 const { post, lang } = Astro.props;
 const { Content } = await render(post);
-const formattedDate = post.data.pubDate.toLocaleDateString(lang === 'fr' ? 'fr-FR' : 'en-US', {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-});
+const formattedDate = post.data.pubDate.toLocaleDateString(
+  lang === 'fr' ? 'fr-FR' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  },
+);
 const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
 ---
-<BaseLayout lang={lang} title={post.data.title} description={post.data.description}>
+
+<BaseLayout
+  lang={lang}
+  title={post.data.title}
+  description={post.data.description}
+>
   <article>
     <p class="article-card__date">{formattedDate}</p>
     <h1>{post.data.title}</h1>
     <div>
-      {post.data.tags.map((tag) => (
-        <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />
-      ))}
+      {
+        post.data.tags.map((tag) => (
+          <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />
+        ))
+      }
     </div>
     <Content />
   </article>
@@ -968,6 +1016,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 ---
+
 <ArticleLayout post={post} lang="fr" />
 ```
 
@@ -990,6 +1039,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 ---
+
 <ArticleLayout post={post} lang="en" />
 ```
 
@@ -1013,10 +1063,12 @@ git commit -m "Ajout des pages d'article individuel"
 ### Task 8: Pages de filtrage par tag
 
 **Files:**
+
 - Create: `src/pages/blog/tags/[tag].astro`
 - Create: `src/pages/en/blog/tags/[tag].astro`
 
 **Interfaces:**
+
 - Consumes: `blogFr`/`blogEn` (Task 4), `ArticleCard` (Task 5), `BaseLayout` (Task 3). Doit rester cohérent avec les URLs `href` générées par `ArticleCard`/`ArticleLayout` en Task 5/7 (`/blog/tags/<tag>/` et `/en/blog/tags/<tag>/`).
 
 - [ ] **Step 1: Écrire la page de tag FR**
@@ -1043,18 +1095,25 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
-<BaseLayout lang="fr" title={`Articles : ${tag}`} description={`Articles tagués ${tag}.`}>
+
+<BaseLayout
+  lang="fr"
+  title={`Articles : ${tag}`}
+  description={`Articles tagués ${tag}.`}
+>
   <h1>Articles : {tag}</h1>
-  {posts.map((post) => (
-    <ArticleCard
-      title={post.data.title}
-      description={post.data.description}
-      pubDate={post.data.pubDate}
-      tags={post.data.tags}
-      href={`/blog/${post.id}/`}
-      lang="fr"
-    />
-  ))}
+  {
+    posts.map((post) => (
+      <ArticleCard
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        href={`/blog/${post.id}/`}
+        lang="fr"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1082,18 +1141,25 @@ export async function getStaticPaths() {
 const { tag } = Astro.params;
 const { posts } = Astro.props;
 ---
-<BaseLayout lang="en" title={`Articles tagged ${tag}`} description={`Articles tagged ${tag}.`}>
+
+<BaseLayout
+  lang="en"
+  title={`Articles tagged ${tag}`}
+  description={`Articles tagged ${tag}.`}
+>
   <h1>Articles tagged: {tag}</h1>
-  {posts.map((post) => (
-    <ArticleCard
-      title={post.data.title}
-      description={post.data.description}
-      pubDate={post.data.pubDate}
-      tags={post.data.tags}
-      href={`/en/blog/${post.id}/`}
-      lang="en"
-    />
-  ))}
+  {
+    posts.map((post) => (
+      <ArticleCard
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        href={`/en/blog/${post.id}/`}
+        lang="en"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1120,11 +1186,13 @@ git commit -m "Ajout des pages de filtrage par tag"
 ### Task 9: Page Projets
 
 **Files:**
+
 - Create: `src/components/ProjectCard.astro`
 - Create: `src/pages/projects.astro`
 - Create: `src/pages/en/projects.astro`
 
 **Interfaces:**
+
 - Consumes: collection `projects` (Task 4), `BaseLayout` (Task 3), `Lang` (Task 3).
 - Produces: `ProjectCard` avec props `{ title: string; description: string; tags: string[]; lang: Lang; url?: string; repoUrl?: string }`.
 
@@ -1149,6 +1217,7 @@ const { title, description, tags, lang, url, repoUrl } = Astro.props;
 const codeLabel = lang === 'fr' ? 'Code source' : 'Source code';
 const demoLabel = lang === 'fr' ? 'Voir le projet' : 'View project';
 ---
+
 <article class="project-card">
   <h2 class="project-card__title">{title}</h2>
   <p>{description}</p>
@@ -1173,18 +1242,25 @@ import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
 ---
-<BaseLayout lang="fr" title="Projets" description="Une sélection de mes projets.">
+
+<BaseLayout
+  lang="fr"
+  title="Projets"
+  description="Une sélection de mes projets."
+>
   <h1>Projets</h1>
-  {projects.map((project) => (
-    <ProjectCard
-      title={project.data.title.fr}
-      description={project.data.description.fr}
-      tags={project.data.tags}
-      lang="fr"
-      url={project.data.url}
-      repoUrl={project.data.repoUrl}
-    />
-  ))}
+  {
+    projects.map((project) => (
+      <ProjectCard
+        title={project.data.title.fr}
+        description={project.data.description.fr}
+        tags={project.data.tags}
+        lang="fr"
+        url={project.data.url}
+        repoUrl={project.data.repoUrl}
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1200,18 +1276,25 @@ import { getCollection } from 'astro:content';
 
 const projects = await getCollection('projects');
 ---
-<BaseLayout lang="en" title="Projects" description="A selection of my projects.">
+
+<BaseLayout
+  lang="en"
+  title="Projects"
+  description="A selection of my projects."
+>
   <h1>Projects</h1>
-  {projects.map((project) => (
-    <ProjectCard
-      title={project.data.title.en}
-      description={project.data.description.en}
-      tags={project.data.tags}
-      lang="en"
-      url={project.data.url}
-      repoUrl={project.data.repoUrl}
-    />
-  ))}
+  {
+    projects.map((project) => (
+      <ProjectCard
+        title={project.data.title.en}
+        description={project.data.description.en}
+        tags={project.data.tags}
+        lang="en"
+        url={project.data.url}
+        repoUrl={project.data.repoUrl}
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1235,11 +1318,13 @@ git commit -m "Ajout de la page Projets"
 ### Task 10: Page CV
 
 **Files:**
+
 - Create: `src/components/TimelineItem.astro`
 - Create: `src/pages/cv.astro`
 - Create: `src/pages/en/cv.astro`
 
 **Interfaces:**
+
 - Consumes: collection `experience` (Task 4), `BaseLayout` (Task 3), `Lang` (Task 3).
 - Produces: `TimelineItem` avec props `{ role: string; organization: string; startDate: Date; endDate?: Date; description: string; lang: Lang }`.
 
@@ -1260,9 +1345,13 @@ interface Props {
   lang: Lang;
 }
 
-const { role, organization, startDate, endDate, description, lang } = Astro.props;
+const { role, organization, startDate, endDate, description, lang } =
+  Astro.props;
 const locale = lang === 'fr' ? 'fr-FR' : 'en-US';
-const formatOptions: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long' };
+const formatOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+};
 const startLabel = startDate.toLocaleDateString(locale, formatOptions);
 const endLabel = endDate
   ? endDate.toLocaleDateString(locale, formatOptions)
@@ -1270,6 +1359,7 @@ const endLabel = endDate
     ? "Aujourd'hui"
     : 'Present';
 ---
+
 <div class="timeline-item">
   <h3>{role} — {organization}</h3>
   <p class="article-card__date">{startLabel} – {endLabel}</p>
@@ -1291,18 +1381,21 @@ const experiences = (await getCollection('experience')).sort(
   (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
 );
 ---
+
 <BaseLayout lang="fr" title="CV" description="Mon expérience professionnelle.">
   <h1>Expérience</h1>
-  {experiences.map((experience) => (
-    <TimelineItem
-      role={experience.data.role.fr}
-      organization={experience.data.organization}
-      startDate={experience.data.startDate}
-      endDate={experience.data.endDate}
-      description={experience.data.description.fr}
-      lang="fr"
-    />
-  ))}
+  {
+    experiences.map((experience) => (
+      <TimelineItem
+        role={experience.data.role.fr}
+        organization={experience.data.organization}
+        startDate={experience.data.startDate}
+        endDate={experience.data.endDate}
+        description={experience.data.description.fr}
+        lang="fr"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1320,18 +1413,21 @@ const experiences = (await getCollection('experience')).sort(
   (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
 );
 ---
+
 <BaseLayout lang="en" title="Resume" description="My professional experience.">
   <h1>Experience</h1>
-  {experiences.map((experience) => (
-    <TimelineItem
-      role={experience.data.role.en}
-      organization={experience.data.organization}
-      startDate={experience.data.startDate}
-      endDate={experience.data.endDate}
-      description={experience.data.description.en}
-      lang="en"
-    />
-  ))}
+  {
+    experiences.map((experience) => (
+      <TimelineItem
+        role={experience.data.role.en}
+        organization={experience.data.organization}
+        startDate={experience.data.startDate}
+        endDate={experience.data.endDate}
+        description={experience.data.description.en}
+        lang="en"
+      />
+    ))
+  }
 </BaseLayout>
 ```
 
@@ -1358,12 +1454,14 @@ git commit -m "Ajout de la page CV"
 ### Task 11: Pages À propos et Contact
 
 **Files:**
+
 - Create: `src/pages/about.astro`
 - Create: `src/pages/en/about.astro`
 - Create: `src/pages/contact.astro`
 - Create: `src/pages/en/contact.astro`
 
 **Interfaces:**
+
 - Consumes: `BaseLayout` (Task 3).
 
 - [ ] **Step 1: Écrire la page À propos FR**
@@ -1374,12 +1472,17 @@ Créer `src/pages/about.astro` :
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout lang="fr" title="À propos" description="Qui je suis et ce que je fais.">
+
+<BaseLayout
+  lang="fr"
+  title="À propos"
+  description="Qui je suis et ce que je fais."
+>
   <h1>À propos</h1>
   <p>
-    Je suis développeur full-stack, passionné par le web moderne, les architectures propres
-    et le partage de connaissances. Ce site rassemble mes articles techniques ainsi qu'un
-    aperçu de mon parcours et de mes projets.
+    Je suis développeur full-stack, passionné par le web moderne, les
+    architectures propres et le partage de connaissances. Ce site rassemble mes
+    articles techniques ainsi qu'un aperçu de mon parcours et de mes projets.
   </p>
   <p>Remplace ce texte par ta propre présentation.</p>
 </BaseLayout>
@@ -1393,12 +1496,13 @@ Créer `src/pages/en/about.astro` :
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
+
 <BaseLayout lang="en" title="About" description="Who I am and what I do.">
   <h1>About</h1>
   <p>
-    I'm a full-stack developer, passionate about modern web development, clean architecture,
-    and sharing knowledge. This site gathers my technical articles along with an overview of
-    my background and projects.
+    I'm a full-stack developer, passionate about modern web development, clean
+    architecture, and sharing knowledge. This site gathers my technical articles
+    along with an overview of my background and projects.
   </p>
   <p>Replace this text with your own bio.</p>
 </BaseLayout>
@@ -1412,6 +1516,7 @@ Créer `src/pages/contact.astro` :
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
+
 <BaseLayout lang="fr" title="Contact" description="Comment me contacter.">
   <h1>Contact</h1>
   <p>La meilleure façon de me joindre :</p>
@@ -1432,6 +1537,7 @@ Créer `src/pages/en/contact.astro` :
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
+
 <BaseLayout lang="en" title="Contact" description="How to reach me.">
   <h1>Contact</h1>
   <p>The best way to reach me:</p>
@@ -1464,10 +1570,12 @@ git commit -m "Ajout des pages À propos et Contact"
 ### Task 12: Page d'accueil finalisée
 
 **Files:**
+
 - Modify: `src/pages/index.astro` (remplace le placeholder de la Task 3)
 - Modify: `src/pages/en/index.astro` (remplace le placeholder de la Task 3)
 
 **Interfaces:**
+
 - Consumes: `blogFr`/`blogEn` (Task 4), `ArticleCard` (Task 5), `BaseLayout` (Task 3).
 
 - [ ] **Step 1: Écrire la page d'accueil FR**
@@ -1484,29 +1592,38 @@ const latestPosts = (await getCollection('blogFr'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 ---
-<BaseLayout lang="fr" title="Accueil" description="Développeur — articles techniques et projets.">
+
+<BaseLayout
+  lang="fr"
+  title="Accueil"
+  description="Développeur — articles techniques et projets."
+>
   <section>
     <h1>Bonjour, je suis [Ton Nom]</h1>
     <p>
-      Développeur full-stack. J'écris sur le développement web et je partage mes projets ici.
-      Remplace ce texte par ta propre présentation.
+      Développeur full-stack. J'écris sur le développement web et je partage mes
+      projets ici. Remplace ce texte par ta propre présentation.
     </p>
     <p>
-      <a href="/cv/">Voir mon parcours</a> · <a href="/projects/">Voir mes projets</a>
+      <a href="/cv/">Voir mon parcours</a> · <a href="/projects/"
+        >Voir mes projets</a
+      >
     </p>
   </section>
   <section>
     <h2>Derniers articles</h2>
-    {latestPosts.map((post) => (
-      <ArticleCard
-        title={post.data.title}
-        description={post.data.description}
-        pubDate={post.data.pubDate}
-        tags={post.data.tags}
-        href={`/blog/${post.id}/`}
-        lang="fr"
-      />
-    ))}
+    {
+      latestPosts.map((post) => (
+        <ArticleCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          tags={post.data.tags}
+          href={`/blog/${post.id}/`}
+          lang="fr"
+        />
+      ))
+    }
   </section>
 </BaseLayout>
 ```
@@ -1525,29 +1642,38 @@ const latestPosts = (await getCollection('blogEn'))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 ---
-<BaseLayout lang="en" title="Home" description="Developer — technical articles and projects.">
+
+<BaseLayout
+  lang="en"
+  title="Home"
+  description="Developer — technical articles and projects."
+>
   <section>
     <h1>Hi, I'm [Your Name]</h1>
     <p>
-      Full-stack developer. I write about web development and share my projects here.
-      Replace this text with your own introduction.
+      Full-stack developer. I write about web development and share my projects
+      here. Replace this text with your own introduction.
     </p>
     <p>
-      <a href="/en/cv/">See my background</a> · <a href="/en/projects/">See my projects</a>
+      <a href="/en/cv/">See my background</a> · <a href="/en/projects/"
+        >See my projects</a
+      >
     </p>
   </section>
   <section>
     <h2>Latest articles</h2>
-    {latestPosts.map((post) => (
-      <ArticleCard
-        title={post.data.title}
-        description={post.data.description}
-        pubDate={post.data.pubDate}
-        tags={post.data.tags}
-        href={`/en/blog/${post.id}/`}
-        lang="en"
-      />
-    ))}
+    {
+      latestPosts.map((post) => (
+        <ArticleCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          tags={post.data.tags}
+          href={`/en/blog/${post.id}/`}
+          lang="en"
+        />
+      ))
+    }
   </section>
 </BaseLayout>
 ```
@@ -1575,10 +1701,12 @@ git commit -m "Finalisation de la page d'accueil"
 ### Task 13: Pages 404 localisées
 
 **Files:**
+
 - Create: `src/pages/404.astro`
 - Create: `src/pages/en/404.astro`
 
 **Interfaces:**
+
 - Consumes: `BaseLayout` (Task 3).
 
 Note de portée : `src/pages/404.astro` (racine) est la page que les hébergeurs statiques comme Vercel servent automatiquement pour toute route non trouvée sur l'ensemble du site — c'est la 404 par défaut fonctionnelle, en français. `src/pages/en/404.astro` est une vraie page accessible et liée depuis la navigation anglaise, mais Vercel ne la sert pas automatiquement pour une URL anglaise cassée sans configuration de routing supplémentaire (`vercel.json`) — cette configuration additionnelle n'est pas incluse ici car elle est fragile à écrire sans pouvoir la tester contre le routing réel de Vercel, et une règle mal écrite risquerait de casser le routing de tout le site. Décision assumée, à mentionner à l'utilisateur.
@@ -1591,7 +1719,12 @@ Créer `src/pages/404.astro` :
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout lang="fr" title="Page introuvable" description="Cette page n'existe pas.">
+
+<BaseLayout
+  lang="fr"
+  title="Page introuvable"
+  description="Cette page n'existe pas."
+>
   <h1>Page introuvable</h1>
   <p>La page que tu cherches n'existe pas ou plus.</p>
   <p><a href="/">Retour à l'accueil</a></p>
@@ -1606,7 +1739,12 @@ Créer `src/pages/en/404.astro` :
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
-<BaseLayout lang="en" title="Page not found" description="This page does not exist.">
+
+<BaseLayout
+  lang="en"
+  title="Page not found"
+  description="This page does not exist."
+>
   <h1>Page not found</h1>
   <p>The page you're looking for doesn't exist anymore.</p>
   <p><a href="/en/">Back to home</a></p>
@@ -1633,9 +1771,11 @@ git commit -m "Ajout des pages 404 localisées"
 ### Task 14: Préparation du déploiement Vercel
 
 **Files:**
+
 - Create: `README.md` (remplace le README généré par le scaffold)
 
 **Interfaces:**
+
 - Consumes: l'intégralité du site des tâches précédentes.
 
 - [ ] **Step 1: Vérifier une dernière fois l'ensemble du site**
@@ -1647,7 +1787,7 @@ Expected: 0 erreur sur les quatre commandes. Le dossier `dist/` contient toutes 
 
 Remplacer `README.md` :
 
-```md
+````md
 # Site personnel
 
 Blog et vitrine professionnelle bilingue (FR/EN), construit avec [Astro](https://astro.build).
@@ -1658,6 +1798,7 @@ Blog et vitrine professionnelle bilingue (FR/EN), construit avec [Astro](https:/
 npm install
 npm run dev
 ```
+````
 
 ## Vérifications
 
@@ -1682,14 +1823,15 @@ npm run build           # build de production dans dist/
 - `src/pages/contact.astro` et `src/pages/en/contact.astro` : vrais liens de contact.
 - `src/data/projects.json`, `src/data/experience.json` : projets et expérience réels.
 - `src/content/blog/fr/`, `src/content/blog/en/` : articles réels (les fichiers d'exemple peuvent être supprimés).
-```
+
+````
 
 - [ ] **Step 3: Commit**
 
 ```bash
 git add -A
 git commit -m "Ajout du README avec les instructions de déploiement"
-```
+````
 
 ---
 

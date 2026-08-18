@@ -6,6 +6,7 @@
 ## Contexte et objectif
 
 Site personnel pour un développeur, servant deux buts :
+
 1. Publier des articles de blog (thématique développement/tech).
 2. Servir de vitrine professionnelle (bio, projets, expérience, contact) pour la visibilité personnelle.
 
@@ -36,26 +37,28 @@ Le site est bilingue français/anglais dès le départ.
 
 Toutes préfixées par la locale selon la règle ci-dessus (`/`, `/en/`) :
 
-| Route | Contenu |
-|---|---|
-| `/` | Accueil : intro courte, derniers articles, mise en avant professionnelle |
-| `/blog/` | Liste des articles, filtrable par tag |
-| `/blog/[slug]/` | Article individuel |
-| `/blog/tags/[tag]/` | Articles filtrés par tag |
-| `/about/` | Bio / à propos |
-| `/projects/` | Portfolio de projets |
-| `/cv/` | Expérience professionnelle, consultable en ligne |
-| `/contact/` | Liens sociaux + email direct |
+| Route               | Contenu                                                                  |
+| ------------------- | ------------------------------------------------------------------------ |
+| `/`                 | Accueil : intro courte, derniers articles, mise en avant professionnelle |
+| `/blog/`            | Liste des articles, filtrable par tag                                    |
+| `/blog/[slug]/`     | Article individuel                                                       |
+| `/blog/tags/[tag]/` | Articles filtrés par tag                                                 |
+| `/about/`           | Bio / à propos                                                           |
+| `/projects/`        | Portfolio de projets                                                     |
+| `/cv/`              | Expérience professionnelle, consultable en ligne                         |
+| `/contact/`         | Liens sociaux + email direct                                             |
 
 Chaque route existe en version `/en/...` équivalente.
 
 ## Fonctionnalités
 
 **Incluses dès le départ** :
+
 - Tags/catégories sur les articles, avec pages de filtrage dédiées.
 - Sélecteur de langue FR/EN.
 
 **Explicitement hors scope initial (YAGNI, ajoutables plus tard sans refonte)** :
+
 - Flux RSS.
 - Bouton mode sombre.
 - Recherche d'articles.
@@ -65,6 +68,7 @@ Chaque route existe en version `/en/...` équivalente.
 ## Composants
 
 Composants de présentation réutilisables, sans logique métier interne :
+
 - Layout de base (header avec navigation + sélecteur de langue, footer).
 - Carte d'article (aperçu dans la liste du blog).
 - Carte de projet.
