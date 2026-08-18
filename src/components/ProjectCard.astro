@@ -1,0 +1,27 @@
+---
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  tags: string[];
+  lang: Lang;
+  url?: string;
+  repoUrl?: string;
+}
+
+const { title, description, tags, lang, url, repoUrl } = Astro.props;
+const codeLabel = lang === 'fr' ? 'Code source' : 'Source code';
+const demoLabel = lang === 'fr' ? 'Voir le projet' : 'View project';
+---
+
+<article class="project-card">
+  <h2 class="project-card__title">{title}</h2>
+  <p>{description}</p>
+  <p>{tags.join(' · ')}</p>
+  <p>
+    {url && <a href={url}>{demoLabel}</a>}
+    {url && repoUrl && ' · '}
+    {repoUrl && <a href={repoUrl}>{codeLabel}</a>}
+  </p>
+</article>
