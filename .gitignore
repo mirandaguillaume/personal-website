@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# claude session state files
+.claude/scheduled_tasks.lock
