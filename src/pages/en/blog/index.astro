@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blogEn')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+---
+
+<BaseLayout lang="en" title="Blog" description="List of blog articles.">
+  <h1>Blog</h1>
+  {
+    posts.map((post) => (
+      <ArticleCard
+        title={post.data.title}
+        description={post.data.description}
+        pubDate={post.data.pubDate}
+        tags={post.data.tags}
+        href={`/en/blog/${post.id}/`}
+        lang="en"
+      />
+    ))
+  }
+</BaseLayout>
