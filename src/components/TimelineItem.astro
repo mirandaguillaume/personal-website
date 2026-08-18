@@ -1,0 +1,32 @@
+---
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  role: string;
+  organization: string;
+  startDate: Date;
+  endDate?: Date;
+  description: string;
+  lang: Lang;
+}
+
+const { role, organization, startDate, endDate, description, lang } =
+  Astro.props;
+const locale = lang === 'fr' ? 'fr-FR' : 'en-US';
+const formatOptions: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+};
+const startLabel = startDate.toLocaleDateString(locale, formatOptions);
+const endLabel = endDate
+  ? endDate.toLocaleDateString(locale, formatOptions)
+  : lang === 'fr'
+    ? "Aujourd'hui"
+    : 'Present';
+---
+
+<div class="timeline-item">
+  <h3>{role} — {organization}</h3>
+  <p class="article-card__date">{startLabel} – {endLabel}</p>
+  <p>{description}</p>
+</div>
