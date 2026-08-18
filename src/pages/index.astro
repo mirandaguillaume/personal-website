@@ -1,7 +1,43 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const latestPosts = (await getCollection('blogFr'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
-<BaseLayout lang="fr" title="Accueil" description="Site personnel.">
-  <h1>Accueil (FR)</h1>
+<BaseLayout
+  lang="fr"
+  title="Accueil"
+  description="Développeur — articles techniques et projets."
+>
+  <section>
+    <h1>Bonjour, je suis [Ton Nom]</h1>
+    <p>
+      Développeur full-stack. J'écris sur le développement web et je partage mes
+      projets ici. Remplace ce texte par ta propre présentation.
+    </p>
+    <p>
+      <a href="/cv/">Voir mon parcours</a> · <a href="/projects/"
+        >Voir mes projets</a
+      >
+    </p>
+  </section>
+  <section>
+    <h2>Derniers articles</h2>
+    {
+      latestPosts.map((post) => (
+        <ArticleCard
+          title={post.data.title}
+          description={post.data.description}
+          pubDate={post.data.pubDate}
+          tags={post.data.tags}
+          href={`/blog/${post.id}/`}
+          lang="fr"
+        />
+      ))
+    }
+  </section>
 </BaseLayout>
