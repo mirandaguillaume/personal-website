@@ -1,0 +1,22 @@
+[
+  {
+    "id": "site-personnel",
+    "title": { "fr": "Site personnel", "en": "Personal website" },
+    "description": {
+      "fr": "Ce site : blog et vitrine professionnelle construits avec Astro.",
+      "en": "This site: a blog and professional showcase built with Astro."
+    },
+    "tags": ["astro", "typescript"],
+    "repoUrl": "https://github.com/exemple/site-personnel"
+  },
+  {
+    "id": "projet-exemple",
+    "title": { "fr": "Projet exemple", "en": "Example project" },
+    "description": {
+      "fr": "Décris ici un projet marquant de ton parcours.",
+      "en": "Describe a notable project from your background here."
+    },
+    "tags": ["react", "node"],
+    "repoUrl": "https://github.com/exemple/projet-exemple"
+  }
+]
