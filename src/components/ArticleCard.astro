@@ -1,0 +1,33 @@
+---
+import TagPill from './TagPill.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  tags: string[];
+  href: string;
+  lang: Lang;
+}
+
+const { title, description, pubDate, tags, href, lang } = Astro.props;
+const formattedDate = pubDate.toLocaleDateString(
+  lang === 'fr' ? 'fr-FR' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  },
+);
+const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
+---
+
+<article class="article-card">
+  <p class="article-card__date">{formattedDate}</p>
+  <h2 class="article-card__title"><a href={href}>{title}</a></h2>
+  <p>{description}</p>
+  <div>
+    {tags.map((tag) => <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />)}
+  </div>
+</article>
