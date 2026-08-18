@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TimelineItem from '../components/TimelineItem.astro';
+import { getCollection } from 'astro:content';
+
+const experiences = (await getCollection('experience')).sort(
+  (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
+);
+---
+
+<BaseLayout lang="fr" title="CV" description="Mon expérience professionnelle.">
+  <h1>Expérience</h1>
+  {
+    experiences.map((experience) => (
+      <TimelineItem
+        role={experience.data.role.fr}
+        organization={experience.data.organization}
+        startDate={experience.data.startDate}
+        endDate={experience.data.endDate}
+        description={experience.data.description.fr}
+        lang="fr"
+      />
+    ))
+  }
+</BaseLayout>
