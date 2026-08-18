@@ -1,0 +1,43 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TagPill from '../components/TagPill.astro';
+import type { Lang } from '../i18n/ui';
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blogFr'> | CollectionEntry<'blogEn'>;
+  lang: Lang;
+}
+
+const { post, lang } = Astro.props;
+const { Content } = await render(post);
+const formattedDate = post.data.pubDate.toLocaleDateString(
+  lang === 'fr' ? 'fr-FR' : 'en-US',
+  {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  },
+);
+const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
+---
+
+<BaseLayout
+  lang={lang}
+  title={post.data.title}
+  description={post.data.description}
+>
+  <article>
+    <p class="article-card__date">{formattedDate}</p>
+    <h1>{post.data.title}</h1>
+    <div>
+      {
+        post.data.tags.map((tag) => (
+          <TagPill tag={tag} href={`${tagsBase}/${tag}/`} />
+        ))
+      }
+    </div>
+    <Content />
+  </article>
+</BaseLayout>
