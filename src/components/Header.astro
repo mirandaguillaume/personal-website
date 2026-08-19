@@ -16,11 +16,11 @@ const translatePath = useTranslatedPath(lang);
   <nav class="site-nav">
     <a class="site-nav__brand" href={translatePath('/')}>{t('nav.home')}</a>
     <ul class="site-nav__links">
-      <li><a href={translatePath('/blog')}>{t('nav.blog')}</a></li>
-      <li><a href={translatePath('/about')}>{t('nav.about')}</a></li>
-      <li><a href={translatePath('/projects')}>{t('nav.projects')}</a></li>
-      <li><a href={translatePath('/cv')}>{t('nav.cv')}</a></li>
-      <li><a href={translatePath('/contact')}>{t('nav.contact')}</a></li>
+      <li><a href={translatePath('/blog/')}>{t('nav.blog')}</a></li>
+      <li><a href={translatePath('/about/')}>{t('nav.about')}</a></li>
+      <li><a href={translatePath('/projects/')}>{t('nav.projects')}</a></li>
+      <li><a href={translatePath('/cv/')}>{t('nav.cv')}</a></li>
+      <li><a href={translatePath('/contact/')}>{t('nav.contact')}</a></li>
     </ul>
     <LanguageSwitcher lang={lang} />
   </nav>
