@@ -1,23 +1,12 @@
 [
   {
-    "id": "poste-actuel",
+    "id": "edenred",
     "role": { "fr": "Développeur full-stack", "en": "Full-stack developer" },
-    "organization": "Entreprise Exemple",
-    "startDate": "2024-01-01",
+    "organization": "Edenred",
+    "startDate": "2025-08-01",
     "description": {
-      "fr": "Décris ici tes responsabilités et réalisations principales.",
-      "en": "Describe your main responsibilities and achievements here."
-    }
-  },
-  {
-    "id": "poste-precedent",
-    "role": { "fr": "Développeur web", "en": "Web developer" },
-    "organization": "Ancienne Entreprise",
-    "startDate": "2021-06-01",
-    "endDate": "2023-12-31",
-    "description": {
-      "fr": "Décris ici tes responsabilités et réalisations principales.",
-      "en": "Describe your main responsibilities and achievements here."
+      "fr": "Détails à venir.",
+      "en": "Details coming soon."
     }
   }
 ]
