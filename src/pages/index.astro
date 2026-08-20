@@ -13,13 +13,15 @@ const latestPosts = (await getCollection('blogFr'))
   title="Accueil"
   description="Développeur — articles techniques et projets."
 >
-  <section>
-    <h1>Bonjour, je suis [Ton Nom]</h1>
-    <p>
-      Développeur full-stack. J'écris sur le développement web et je partage mes
-      projets ici. Remplace ce texte par ta propre présentation.
+  <section class="hero">
+    <h1 class="hero__title">
+      Bonjour, je suis <mark>Guillaume Miranda</mark>
+    </h1>
+    <p class="hero__desc">
+      Développeur full-stack basé à Paris. J'écris sur le développement web et
+      je partage mes projets ici.
     </p>
-    <p>
+    <p class="hero__links">
       <a href="/cv/">Voir mon parcours</a> · <a href="/projects/"
         >Voir mes projets</a
       >

@@ -27,3 +27,4 @@ pnpm-debug.log*
 .claude/scheduled_tasks.lock
 .claude/settings.local.json
 .superpowers/
+.vercel

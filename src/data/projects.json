@@ -7,16 +7,40 @@
       "en": "This site: a blog and professional showcase built with Astro."
     },
     "tags": ["astro", "typescript"],
-    "repoUrl": "https://github.com/exemple/site-personnel"
+    "repoUrl": "https://github.com/mirandaguillaume/personal-website"
   },
   {
-    "id": "projet-exemple",
-    "title": { "fr": "Projet exemple", "en": "Example project" },
+    "id": "reify",
+    "title": { "fr": "Reify", "en": "Reify" },
     "description": {
-      "fr": "Décris ici un projet marquant de ton parcours.",
-      "en": "Describe a notable project from your background here."
+      "fr": "Compile le contexte de tes agents IA à travers plusieurs outils (Claude Code, Copilot, Cursor) depuis une seule source de vérité YAML. Analyse ce qui est présent, ce qui manque, et ce qui est probablement ignoré.",
+      "en": "Compiles your AI agent context across coding harnesses (Claude Code, Copilot, Cursor) from a single YAML source of truth. Analyzes what's there, what's missing, and what's likely ignored."
     },
-    "tags": ["react", "node"],
-    "repoUrl": "https://github.com/exemple/projet-exemple"
+    "tags": ["go", "yaml", "ai-agents"],
+    "repoUrl": "https://github.com/mirandaguillaume/reify"
+  },
+  {
+    "id": "phpunit-rust",
+    "title": { "fr": "PHPUnit Rust", "en": "PHPUnit Rust" },
+    "description": {
+      "fr": "Runner PHPUnit parallélisé écrit en Rust : pool de forks, work-stealing, couverture statique — plus de 2× plus rapide, compatible drop-in.",
+      "en": "Parallel PHPUnit runner written in Rust: fork-pool, work-stealing, static coverage — 2×+ faster, drop-in compatible."
+    },
+    "tags": ["rust", "php", "phpunit"],
+    "repoUrl": "https://github.com/mirandaguillaume/phpunit-rust"
+  },
+  {
+    "id": "mutation-testing",
+    "title": {
+      "fr": "Mutation testing (conférence)",
+      "en": "Mutation testing (talk)"
+    },
+    "description": {
+      "fr": "Slides d'une conférence sur le mutation testing, sur le thème X-Men.",
+      "en": "Conference slides on mutation testing, X-Men themed."
+    },
+    "tags": ["reveal.js", "testing"],
+    "url": "https://mirandaguillaume.github.io/mutation-testing/",
+    "repoUrl": "https://github.com/mirandaguillaume/mutation-testing"
   }
 ]
