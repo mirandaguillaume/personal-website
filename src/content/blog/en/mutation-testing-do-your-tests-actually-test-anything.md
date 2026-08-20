@@ -1,8 +1,8 @@
 ---
-title: "Mutation testing: do your tests actually test anything?"
-description: "Code coverage says nothing about how good your tests are. Mutation testing does — and it can save you from a real production incident."
+title: 'Mutation testing: do your tests actually test anything?'
+description: 'Code coverage says nothing about how good your tests are. Mutation testing does — and it can save you from a real production incident.'
 pubDate: 2026-08-20
-tags: ["testing", "php", "mutation-testing"]
+tags: ['testing', 'php', 'mutation-testing']
 ---
 
 ## The everyday scenario
@@ -26,7 +26,7 @@ Merged. Everyone's happy.
 
 Except nothing in that process checked whether the test actually catches a bug. It just executed some lines of code. Coverage measures the **quantity** of code your tests run, not the **quality** of what they verify.
 
-And since we started asking an AI assistant to "generate a test" to bump the number back up, the problem has gotten worse: according to a 2025 study (Huang et al.), LLM-generated tests score an average mutation score of just 20%. They pass, they count toward coverage, and they catch almost nothing.
+And since we started asking an AI assistant to "generate a test" to bump the number back up, the problem has gotten worse: according to a 2025 study ([Huang et al., arXiv:2508.00408](https://arxiv.org/abs/2508.00408)), on real-world functions complex enough to avoid benchmark contamination, LLM-generated tests average just a 40% mutation score. They pass, they count toward coverage, and they miss most of the bugs a well-designed test would have caught.
 
 ## The story that hurts
 
@@ -94,4 +94,4 @@ Fast, targeted, and it gives a real guarantee about the code that was just touch
 
 ---
 
-*I gave a longer talk on this (AFUP Paris / Dayuse, June 2026), X-Men theme included — [the slides are online](https://mirandaguillaume.github.io/mutation-testing/) if you want the full version.*
+_I gave a longer talk on this (AFUP Paris / Dayuse, June 2026), X-Men theme included — [the slides are online](https://mirandaguillaume.github.io/mutation-testing/) if you want the full version._

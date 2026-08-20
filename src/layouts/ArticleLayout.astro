@@ -29,9 +29,11 @@ const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
   description={post.data.description}
 >
   <article>
-    {post.data.draft && (
-      <p class="draft-badge">{lang === 'fr' ? 'Brouillon' : 'Draft'}</p>
-    )}
+    {
+      post.data.draft && (
+        <p class="draft-badge">{lang === 'fr' ? 'Brouillon' : 'Draft'}</p>
+      )
+    }
     <p class="article-card__date">{formattedDate}</p>
     <h1>{post.data.title}</h1>
     <div>
