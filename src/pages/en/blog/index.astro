@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
-import { getCollection } from 'astro:content';
+import { getPublishedPosts } from '../../../content/blog-utils';
 
-const posts = (await getCollection('blogEn')).sort(
+const posts = (await getPublishedPosts('blogEn')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
@@ -19,6 +19,7 @@ const posts = (await getCollection('blogEn')).sort(
         tags={post.data.tags}
         href={`/en/blog/${post.id}/`}
         lang="en"
+        draft={post.data.draft}
       />
     ))
   }

@@ -1,10 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ArticleCard from '../../../../components/ArticleCard.astro';
+import { getPublishedPosts } from '../../../../content/blog-utils';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blogEn');
+  const posts = await getPublishedPosts('blogEn');
   const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
   return tags.map((tag) => ({
     params: { tag },
@@ -33,6 +33,7 @@ const { posts } = Astro.props;
         tags={post.data.tags}
         href={`/en/blog/${post.id}/`}
         lang="en"
+        draft={post.data.draft}
       />
     ))
   }

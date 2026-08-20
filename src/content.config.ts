@@ -7,6 +7,7 @@ const blogSchema = z.object({
   description: z.string(),
   pubDate: z.coerce.date(),
   tags: z.array(z.string()),
+  draft: z.boolean().optional().default(false),
 });
 
 const blogFr = defineCollection({

@@ -9,9 +9,10 @@ interface Props {
   tags: string[];
   href: string;
   lang: Lang;
+  draft?: boolean;
 }
 
-const { title, description, pubDate, tags, href, lang } = Astro.props;
+const { title, description, pubDate, tags, href, lang, draft } = Astro.props;
 const formattedDate = pubDate.toLocaleDateString(
   lang === 'fr' ? 'fr-FR' : 'en-US',
   {
@@ -24,6 +25,7 @@ const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
 ---
 
 <article class="article-card">
+  {draft && <p class="draft-badge">{lang === 'fr' ? 'Brouillon' : 'Draft'}</p>}
   <p class="article-card__date">{formattedDate}</p>
   <h2 class="article-card__title"><a href={href}>{title}</a></h2>
   <p>{description}</p>
