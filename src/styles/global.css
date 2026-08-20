@@ -269,6 +269,18 @@ mark::after {
   color: #fff;
 }
 
+.draft-badge {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--brick-deep);
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
 .timeline-item {
   border-left: 2px solid var(--border);
   padding-left: 1.1rem;
