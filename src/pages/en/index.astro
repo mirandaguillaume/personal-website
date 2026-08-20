@@ -13,13 +13,15 @@ const latestPosts = (await getCollection('blogEn'))
   title="Home"
   description="Developer — technical articles and projects."
 >
-  <section>
-    <h1>Hi, I'm [Your Name]</h1>
-    <p>
-      Full-stack developer. I write about web development and share my projects
-      here. Replace this text with your own introduction.
+  <section class="hero">
+    <h1 class="hero__title">
+      Hi, I'm <mark>Guillaume Miranda</mark>
+    </h1>
+    <p class="hero__desc">
+      Full-stack developer based in Paris. I write about web development and
+      share my projects here.
     </p>
-    <p>
+    <p class="hero__links">
       <a href="/en/cv/">See my background</a> · <a href="/en/projects/"
         >See my projects</a
       >

@@ -1,23 +1,70 @@
 [
   {
-    "id": "poste-actuel",
-    "role": { "fr": "Développeur full-stack", "en": "Full-stack developer" },
-    "organization": "Entreprise Exemple",
-    "startDate": "2024-01-01",
+    "id": "freelance",
+    "role": {
+      "fr": "Développeur web freelance",
+      "en": "Freelance web developer"
+    },
+    "organization": "Indépendant",
+    "startDate": "2023-11-01",
     "description": {
-      "fr": "Décris ici tes responsabilités et réalisations principales.",
-      "en": "Describe your main responsibilities and achievements here."
+      "fr": "En mission chez Edenred depuis août 2025, en tant que développeur full-stack.",
+      "en": "On assignment at Edenred since August 2025, as a full-stack developer."
     }
   },
   {
-    "id": "poste-precedent",
-    "role": { "fr": "Développeur web", "en": "Web developer" },
-    "organization": "Ancienne Entreprise",
-    "startDate": "2021-06-01",
-    "endDate": "2023-12-31",
+    "id": "singulart",
+    "role": { "fr": "Développeur back-end", "en": "Back-end developer" },
+    "organization": "Singulart",
+    "startDate": "2022-07-01",
+    "endDate": "2023-12-01",
     "description": {
-      "fr": "Décris ici tes responsabilités et réalisations principales.",
-      "en": "Describe your main responsibilities and achievements here."
+      "fr": "RabbitMQ, gestion de base de données, et plus.",
+      "en": "RabbitMQ, database management, and more."
+    }
+  },
+  {
+    "id": "worldia",
+    "role": { "fr": "Développeur backend", "en": "Backend developer" },
+    "organization": "Worldia",
+    "startDate": "2021-10-01",
+    "endDate": "2022-05-01",
+    "description": {
+      "fr": "RabbitMQ, gestion de base de données, et plus.",
+      "en": "RabbitMQ, database management, and more."
+    }
+  },
+  {
+    "id": "hr-team-group",
+    "role": { "fr": "Développeur web", "en": "Web developer" },
+    "organization": "HR Team Group",
+    "startDate": "2019-01-01",
+    "endDate": "2021-11-01",
+    "description": {
+      "fr": "RabbitMQ, gestion de base de données, et plus.",
+      "en": "RabbitMQ, database management, and more."
+    }
+  },
+  {
+    "id": "la-poste-telecom",
+    "role": { "fr": "Développeur web", "en": "Web developer" },
+    "organization": "La Poste TELECOM",
+    "startDate": "2016-01-01",
+    "endDate": "2018-11-01",
+    "description": {
+      "fr": "Lead dev sur les web services du suivi unifié de La Poste. Devops sur l'API du Compte Client Unique de La Poste.",
+      "en": "Lead developer on La Poste's unified tracking web services. DevOps on La Poste's unified customer account API."
+    }
+  },
+  {
+    "id": "mabeaute",
+    "role": { "fr": "Développeur web", "en": "Web developer" },
+    "organization": "mabeaute.com",
+    "startDate": "2014-04-01",
+    "endDate": "2015-03-01",
+    "description": {
+      "fr": "Développeur web de la plateforme de réservation de soins de beauté à domicile en ligne.",
+      "en": "Web developer for an online platform for booking at-home beauty treatments."
     }
   }
 ]
