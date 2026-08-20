@@ -1,8 +1,8 @@
 ---
-title: "Mutation testing : vos tests testent-ils vraiment quelque chose ?"
-description: "Le taux de couverture ne dit rien sur la qualité de vos tests. Le mutation testing, si — et ça peut vous éviter un vrai incident en prod."
+title: 'Mutation testing : vos tests testent-ils vraiment quelque chose ?'
+description: 'Le taux de couverture ne dit rien sur la qualité de vos tests. Le mutation testing, si — et ça peut vous éviter un vrai incident en prod.'
 pubDate: 2026-08-20
-tags: ["testing", "php", "mutation-testing"]
+tags: ['testing', 'php', 'mutation-testing']
 ---
 
 ## Le scénario du quotidien
@@ -26,7 +26,7 @@ Mergé. Tout le monde est content.
 
 Sauf que rien dans ce processus n'a vérifié si ce test détecte réellement un bug. Il a juste exécuté des lignes de code. Le coverage mesure la **quantité** de code exécuté par vos tests, pas la **qualité** de ce qu'ils vérifient.
 
-Et depuis qu'on demande à un assistant IA de "générer un test" pour faire remonter le chiffre, le problème s'est aggravé : selon une étude de 2025 (Huang et al.), les tests générés par LLM obtiennent en moyenne un score de mutation de seulement 20 %. Ils passent, ils comptent dans le coverage, et ils ne détectent presque rien.
+Et depuis qu'on demande à un assistant IA de "générer un test" pour faire remonter le chiffre, le problème s'est aggravé : selon une étude de 2025 ([Huang et al., arXiv:2508.00408](https://arxiv.org/abs/2508.00408)), sur des fonctions réelles suffisamment complexes pour éviter la contamination des benchmarks, les tests générés par LLM n'atteignent en moyenne qu'un score de mutation de 40 %. Ils passent, ils comptent dans le coverage, et ils ratent la majorité des bugs qu'un test bien conçu aurait attrapés.
 
 ## L'histoire qui fait mal
 
@@ -94,4 +94,4 @@ Rapide, ciblé, et ça donne une vraie garantie sur le code qui vient d'être mo
 
 ---
 
-*J'ai donné une conférence plus complète sur ce sujet (AFUP Paris / Dayuse, juin 2026), thème X-Men à l'appui — [les slides sont en ligne](https://mirandaguillaume.github.io/mutation-testing/) si le sujet vous intéresse.*
+_J'ai donné une conférence plus complète sur ce sujet (AFUP Paris / Dayuse, juin 2026), thème X-Men à l'appui — [les slides sont en ligne](https://mirandaguillaume.github.io/mutation-testing/) si le sujet vous intéresse._
