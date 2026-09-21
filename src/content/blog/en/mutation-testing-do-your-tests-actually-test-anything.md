@@ -3,6 +3,7 @@ title: 'Mutation testing: do your tests actually test anything?'
 description: 'Code coverage says nothing about how good your tests are. Mutation testing does — and it can save you from a real production incident.'
 pubDate: 2026-08-20
 tags: ['testing', 'php', 'mutation-testing']
+translationKey: 'mutation-testing'
 ---
 
 ## The everyday scenario

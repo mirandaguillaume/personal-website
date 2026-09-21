@@ -4,12 +4,22 @@ import type { Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
+  /** Chemin de la page courante dans l'autre langue, si elle est publiée. */
+  alternate?: string | null;
 }
 
-const { lang } = Astro.props;
+const { lang, alternate } = Astro.props;
 
 function homeUrlFor(target: Lang) {
   return !showDefaultLang && target === defaultLang ? '/' : `/${target}/`;
+}
+
+// La langue courante pointe sur la page courante, l'autre sur sa traduction.
+// Sans traduction publiée on retombe sur l'accueil de cette langue, plutôt
+// que d'afficher un lien mort ou de faire disparaître le choix.
+function urlFor(target: Lang) {
+  if (target === lang) return Astro.url.pathname;
+  return alternate ?? homeUrlFor(target);
 }
 ---
 
@@ -18,7 +28,7 @@ function homeUrlFor(target: Lang) {
     Object.entries(languages).map(([code, label]) => (
       <li>
         <a
-          href={homeUrlFor(code as Lang)}
+          href={urlFor(code as Lang)}
           aria-current={code === lang ? 'true' : undefined}
         >
           {label}
