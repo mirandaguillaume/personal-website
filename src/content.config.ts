@@ -7,6 +7,9 @@ const blogSchema = z.object({
   description: z.string(),
   pubDate: z.coerce.date(),
   tags: z.array(z.string()),
+  // Relie un article à sa traduction. Obligatoire : un article sans clé
+  // casse le build plutôt que de perdre son hreflang en silence.
+  translationKey: z.string(),
   draft: z.boolean().optional().default(false),
 });
 

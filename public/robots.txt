@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://personal-website-kappa-two-36.vercel.app/sitemap-index.xml

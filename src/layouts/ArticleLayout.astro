@@ -2,6 +2,7 @@
 import BaseLayout from './BaseLayout.astro';
 import TagPill from '../components/TagPill.astro';
 import type { Lang } from '../i18n/ui';
+import { articleAlternatePath, otherLang } from '../i18n/alternates';
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 
@@ -12,6 +13,11 @@ interface Props {
 
 const { post, lang } = Astro.props;
 const { Content } = await render(post);
+// null plutôt que undefined : dit explicitement à BaseLayout « pas de
+// traduction publiée », au lieu de le laisser deviner par le chemin.
+const alternate =
+  (await articleAlternatePath(post.data.translationKey, otherLang(lang))) ??
+  null;
 const formattedDate = post.data.pubDate.toLocaleDateString(
   lang === 'fr' ? 'fr-FR' : 'en-US',
   {
@@ -27,6 +33,8 @@ const tagsBase = lang === 'fr' ? '/blog/tags' : '/en/blog/tags';
   lang={lang}
   title={post.data.title}
   description={post.data.description}
+  alternate={alternate}
+  ogType="article"
 >
   <article>
     {
