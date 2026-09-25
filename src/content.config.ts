@@ -28,8 +28,8 @@ const projects = defineCollection({
     title: localizedText,
     description: localizedText,
     tags: z.array(z.string()),
-    url: z.string().url().optional(),
-    repoUrl: z.string().url().optional(),
+    url: z.url().optional(),
+    repoUrl: z.url().optional(),
   }),
 });
 
