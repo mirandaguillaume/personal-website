@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   retirerCode,
+  analyserCorps,
   validerArticles,
   formaterErreurs,
   type ArticleÀValider,
@@ -31,9 +32,24 @@ describe('retirerCode', () => {
     expect(retirerCode('utilisez `[[ -f x ]]` ici')).not.toContain('[[');
   });
 
-  it('laisse le texte intact quand un bloc n’est jamais refermé', () => {
+  it('signale un bloc jamais refermé et en traite la suite comme du code', () => {
     const texte = `avant\n${F}bash\npas de fermeture\nsuite du fichier`;
-    expect(retirerCode(texte)).toContain('suite du fichier');
+    const analyse = analyserCorps(texte);
+    expect(analyse.ligneOuvertureNonFermee).toBe(2);
+    expect(analyse.prose).toContain('avant');
+    expect(analyse.prose).not.toContain('suite du fichier');
+  });
+
+  it('ne prend pas une mention du délimiteur en prose pour une ouverture', () => {
+    expect(
+      analyserCorps(`Le délimiteur est ${F} .`).ligneOuvertureNonFermee,
+    ).toBe(null);
+  });
+
+  it('ne ferme pas un bloc de quatre accents graves avec trois', () => {
+    const texte = [`${F}\``, F, 'encore du code', `${F}\``].join('\n');
+    expect(analyserCorps(texte).ligneOuvertureNonFermee).toBe(null);
+    expect(analyserCorps(texte).prose).toBe('');
   });
 });
 
@@ -166,5 +182,30 @@ describe('formaterErreurs', () => {
 
   it('accorde le singulier', () => {
     expect(formaterErreurs(['a.md : seule'])).toContain('1 erreur');
+  });
+});
+
+describe('validerArticles — délimiteurs de bloc non appariés', () => {
+  it('voit un wikilink séparé du vrai bloc par une mention du délimiteur en prose', () => {
+    const body = [
+      `Le délimiteur est ${F} .`,
+      '',
+      'Voir [[ma autre note]] pour la suite.',
+      '',
+      `${F}php`,
+      'echo 1;',
+      F,
+    ].join('\n');
+    const erreurs = validerArticles([article({ body })]);
+    expect(erreurs.some((e) => e.includes('wikilink'))).toBe(true);
+  });
+});
+
+describe('validerArticles — bloc non refermé', () => {
+  it('signale le bloc et nomme la ligne', () => {
+    const body = `intro\n${F}bash\necho 1;`;
+    const erreurs = validerArticles([article({ body })]);
+    expect(erreurs.some((e) => e.includes('jamais refermé'))).toBe(true);
+    expect(erreurs.some((e) => e.includes('ligne 2'))).toBe(true);
   });
 });

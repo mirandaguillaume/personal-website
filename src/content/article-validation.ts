@@ -15,18 +15,69 @@ export interface ArticleÀValider {
   body: string;
 }
 
+export interface AnalyseCorps {
+  /** Le corps privé de ses blocs de code clôturés et de son code en ligne. */
+  prose: string;
+  /** Ligne (1-indexée) ouvrant un bloc jamais refermé, sinon null. */
+  ligneOuvertureNonFermee: number | null;
+}
+
+/** Ouverture de bloc : 3+ accents graves ou tildes, en début de ligne. */
+const OUVERTURE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
+
 /**
- * Retire les blocs de code clôturés et le code en ligne.
+ * Suit l'état des blocs de code ligne par ligne, comme le fait Markdown.
  *
  * Indispensable avant toute détection de résidu : les articles contiennent des
  * blocs bash, où `[[ -f fichier ]]` est la syntaxe de test standard. Sans ce
  * retrait, un article sur le shell serait rejeté pour un wikilink inexistant.
  *
- * Un bloc jamais refermé n'est pas retiré : le reste du fichier continue d'être
- * inspecté plutôt que d'être avalé silencieusement.
+ * Le balayage est à état, et non un appariement de délimiteurs par position :
+ * une clôture n'existe qu'en début de ligne. Un appariement positionnel
+ * laisserait une mention du délimiteur en prose s'apparier avec l'ouverture du
+ * bloc suivant, et la prose entre les deux — résidus compris — disparaîtrait
+ * silencieusement.
  */
+export function analyserCorps(body: string): AnalyseCorps {
+  const prose: string[] = [];
+  let delimiteur: string | null = null;
+  let ligneOuverture = 0;
+
+  body.split('\n').forEach((ligne, index) => {
+    if (delimiteur === null) {
+      const ouverture = OUVERTURE.exec(ligne);
+      // Une chaîne d'information ne peut pas contenir d'accent grave : sans
+      // cette règle, « ``` » suivi de texte sur la même ligne ouvrirait un bloc.
+      if (
+        ouverture &&
+        !(ouverture[1][0] === '`' && ouverture[2].includes('`'))
+      ) {
+        delimiteur = ouverture[1];
+        ligneOuverture = index + 1;
+        return;
+      }
+      prose.push(ligne);
+      return;
+    }
+    // La clôture reprend le même caractère, au moins aussi longue, seule sur sa
+    // ligne. Tout le reste appartient au bloc.
+    const fermeture = new RegExp(
+      `^ {0,3}\\${delimiteur[0]}{${delimiteur.length},}\\s*$`,
+    );
+    if (fermeture.test(ligne)) {
+      delimiteur = null;
+    }
+  });
+
+  return {
+    prose: prose.join('\n').replace(/`[^`\n]*`/g, ''),
+    ligneOuvertureNonFermee: delimiteur === null ? null : ligneOuverture,
+  };
+}
+
+/** Le corps privé de son code. Raccourci sur `analyserCorps`. */
 export function retirerCode(body: string): string {
-  return body.replace(/```[\s\S]*?```/g, '').replace(/`[^`\n]*`/g, '');
+  return analyserCorps(body).prose;
 }
 
 export function validerArticles(articles: ArticleÀValider[]): string[] {
@@ -47,7 +98,14 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
       erreurs.push(`${article.filePath} : titre de niveau 1 en tête du corps`);
     }
 
-    const texte = retirerCode(article.body);
+    const { prose: texte, ligneOuvertureNonFermee } = analyserCorps(
+      article.body,
+    );
+    if (ligneOuvertureNonFermee !== null) {
+      erreurs.push(
+        `${article.filePath} : bloc de code jamais refermé, ouvert ligne ${ligneOuvertureNonFermee} du corps`,
+      );
+    }
 
     // L'embed est testé avant le wikilink, et le wikilink exclut le « ! » qui
     // le précède, pour que le message désigne la bonne syntaxe.
