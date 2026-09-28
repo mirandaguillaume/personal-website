@@ -34,7 +34,8 @@ Le FR est la langue par défaut et n'est pas préfixée (`/blog/`) ; l'EN l'est 
 ## Ajouter un article
 
 Créer un fichier Markdown dans `src/content/blog/fr/` et sa traduction dans
-`src/content/blog/en/`. Le nom du fichier devient l'URL de l'article.
+`src/content/blog/en/`. Le nom du fichier devient l'URL de l'article, et rien
+n'oblige les deux langues à porter le même.
 
 ```yaml
 ---
@@ -42,11 +43,30 @@ title: "Titre de l'article"
 description: 'Résumé affiché dans les listes et la balise meta description.'
 pubDate: 2026-09-21
 tags: ['testing', 'php']
+translationKey: 'mutation-testing'
 draft: false # optionnel, false par défaut
 ---
 ```
 
 Les tags génèrent automatiquement leurs pages de filtrage (`/blog/tags/<tag>/`).
+
+### `translationKey`
+
+Obligatoire, et **identique dans les deux langues**. C'est la seule chose qui
+relie un article à sa traduction, puisque les slugs sont eux-mêmes traduits :
+
+```
+FR : /blog/mutation-testing-vos-tests-testent-ils-vraiment-quelque-chose/
+EN : /en/blog/mutation-testing-do-your-tests-actually-test-anything/
+```
+
+De cette clé dépendent les balises `hreflang` de l'article et la destination du
+sélecteur de langue. Un article publié sans elle fait **échouer le build** :
+c'est délibéré, un `hreflang` manquant ne se remarquerait pas autrement.
+
+La résolution passe par `getPublishedPosts()`, donc une traduction restée en
+brouillon n'est pas déclarée : mieux vaut aucun `hreflang` qu'un `hreflang`
+pointant vers une page absente du site publié.
 
 ## Brouillons
 
