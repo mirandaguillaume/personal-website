@@ -22,8 +22,18 @@ export interface AnalyseCorps {
   ligneOuvertureNonFermee: number | null;
 }
 
-/** Ouverture de bloc : 3+ accents graves ou tildes, en début de ligne. */
+/** Ouverture de bloc clôturé : 3+ accents graves ou tildes, en début de ligne. */
 const OUVERTURE = /^ {0,3}(`{3,}|~{3,})(.*)$/;
+
+/** Bloc indenté CommonMark : quatre espaces ou une tabulation. */
+const INDENTE = /^(?: {4}|\t)/;
+
+/**
+ * Span de code en ligne : une suite de N accents graves, close par une suite de
+ * même longueur. Peut courir sur plusieurs lignes, mais jamais sur une ligne
+ * vide — c'est la règle CommonMark, et elle borne la portée du retrait.
+ */
+const CODE_EN_LIGNE = /(`+)(?:(?!\n[ \t]*\n)[\s\S])*?\1/g;
 
 /**
  * Suit l'état des blocs de code ligne par ligne, comme le fait Markdown.
@@ -42,35 +52,48 @@ export function analyserCorps(body: string): AnalyseCorps {
   const prose: string[] = [];
   let delimiteur: string | null = null;
   let ligneOuverture = 0;
+  let precedenteVide = true;
+  let dansIndente = false;
 
   body.split('\n').forEach((ligne, index) => {
-    if (delimiteur === null) {
-      const ouverture = OUVERTURE.exec(ligne);
-      // Une chaîne d'information ne peut pas contenir d'accent grave : sans
-      // cette règle, « ``` » suivi de texte sur la même ligne ouvrirait un bloc.
-      if (
-        ouverture &&
-        !(ouverture[1][0] === '`' && ouverture[2].includes('`'))
-      ) {
-        delimiteur = ouverture[1];
-        ligneOuverture = index + 1;
-        return;
-      }
-      prose.push(ligne);
+    if (delimiteur !== null) {
+      // La clôture reprend le même caractère, au moins aussi longue, seule sur
+      // sa ligne. Tout le reste appartient au bloc.
+      const fermeture = new RegExp(
+        `^ {0,3}\\${delimiteur[0]}{${delimiteur.length},}\\s*$`,
+      );
+      if (fermeture.test(ligne)) delimiteur = null;
       return;
     }
-    // La clôture reprend le même caractère, au moins aussi longue, seule sur sa
-    // ligne. Tout le reste appartient au bloc.
-    const fermeture = new RegExp(
-      `^ {0,3}\\${delimiteur[0]}{${delimiteur.length},}\\s*$`,
-    );
-    if (fermeture.test(ligne)) {
-      delimiteur = null;
+
+    const vide = ligne.trim() === '';
+
+    // Bloc indenté : s'ouvre après une ligne vide, se poursuit tant qu'aucune
+    // ligne non vide ne revient à la marge.
+    if (dansIndente) {
+      if (vide || INDENTE.test(ligne)) return;
+      dansIndente = false;
+    } else if (precedenteVide && !vide && INDENTE.test(ligne)) {
+      dansIndente = true;
+      return;
     }
+
+    const ouverture = OUVERTURE.exec(ligne);
+    // Une chaîne d'information ne peut pas contenir d'accent grave : sans cette
+    // règle, « ``` » suivi de texte sur la même ligne ouvrirait un bloc.
+    if (ouverture && !(ouverture[1][0] === '`' && ouverture[2].includes('`'))) {
+      delimiteur = ouverture[1];
+      ligneOuverture = index + 1;
+      precedenteVide = false;
+      return;
+    }
+
+    prose.push(ligne);
+    precedenteVide = vide;
   });
 
   return {
-    prose: prose.join('\n').replace(/`[^`\n]*`/g, ''),
+    prose: prose.join('\n').replace(CODE_EN_LIGNE, ''),
     ligneOuvertureNonFermee: delimiteur === null ? null : ligneOuverture,
   };
 }
@@ -94,7 +117,7 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
     // remonter une ligne située plus bas en « première ligne ».
     const premiereLigne =
       article.body.split('\n').find((ligne) => ligne.trim() !== '') ?? '';
-    if (/^#\s/.test(premiereLigne)) {
+    if (/^ {0,3}#\s/.test(premiereLigne)) {
       erreurs.push(`${article.filePath} : titre de niveau 1 en tête du corps`);
     }
 
@@ -122,7 +145,7 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
         `${article.filePath} : commentaire Obsidian (%%) dans le corps`,
       );
     }
-    if (texte.includes('> [!')) {
+    if (/^ {0,3}>\s*\[!(?!\[)[^\]\n]*\]/m.test(texte)) {
       erreurs.push(
         `${article.filePath} : callout Obsidian (> [!) dans le corps`,
       );

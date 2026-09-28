@@ -209,3 +209,39 @@ describe('validerArticles — bloc non refermé', () => {
     expect(erreurs.some((e) => e.includes('ligne 2'))).toBe(true);
   });
 });
+
+describe('validerArticles — formes de code légitimes', () => {
+  it('accepte un bloc indenté de quatre espaces', () => {
+    const body = ['texte', '', '    if [[ -f x ]]; then :; fi', '', 'fin'].join(
+      '\n',
+    );
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+
+  it('accepte un span à double accent grave', () => {
+    const body = 'voir ``[[ -f x ]]`` ici';
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+
+  it('accepte un span de code sur deux lignes', () => {
+    const body = 'voir `[[ -f x\ny ]]` ici';
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+});
+
+describe('validerArticles — ancrages', () => {
+  it('accepte un badge dans une citation', () => {
+    const body = '> [![Build](i.svg)](ci.example)';
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+
+  it('refuse un callout sans espace après le chevron', () => {
+    const erreurs = validerArticles([article({ body: '>[!info] Attention' })]);
+    expect(erreurs.some((e) => e.includes('callout'))).toBe(true);
+  });
+
+  it('refuse un H1 indenté de trois espaces', () => {
+    const erreurs = validerArticles([article({ body: '   # Titre\n\nsuite' })]);
+    expect(erreurs.some((e) => e.includes('niveau 1'))).toBe(true);
+  });
+});

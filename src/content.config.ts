@@ -7,8 +7,8 @@ import { KEBAB } from './content/article-validation';
 const DATE_MINIMALE = new Date('2000-01-01');
 
 const blogSchema = z.object({
-  title: z.string().min(1, 'title ne doit pas être vide'),
-  description: z.string().min(1, 'description ne doit pas être vide'),
+  title: z.string().trim().min(1, 'title ne doit pas être vide'),
+  description: z.string().trim().min(1, 'description ne doit pas être vide'),
   pubDate: z.coerce.date().min(DATE_MINIMALE, {
     message:
       'pubDate doit être postérieure au 2000-01-01 (un champ vide vaut 1970)',
