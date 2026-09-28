@@ -135,13 +135,16 @@ git commit -m "Mise en place de Vitest"
 
 Remplacer entièrement `src/content/article-validation.test.ts` :
 
-````typescript
+```typescript
 import { describe, it, expect } from 'vitest';
 import {
   retirerCode,
   validerArticles,
   type ArticleÀValider,
 } from './article-validation';
+
+/** Triple accent grave, construit pour ne pas casser les fences du plan. */
+const F = '`'.repeat(3);
 
 function article(partiel: Partial<ArticleÀValider> = {}): ArticleÀValider {
   return {
@@ -155,7 +158,7 @@ function article(partiel: Partial<ArticleÀValider> = {}): ArticleÀValider {
 
 describe('retirerCode', () => {
   it('retire les blocs de code clôturés', () => {
-    const texte = 'avant\n```bash\n[[ -f x ]]\n```\naprès';
+    const texte = `avant\n${F}bash\n[[ -f x ]]\n${F}\naprès`;
     expect(retirerCode(texte)).not.toContain('[[');
     expect(retirerCode(texte)).toContain('avant');
     expect(retirerCode(texte)).toContain('après');
@@ -166,7 +169,7 @@ describe('retirerCode', () => {
   });
 
   it('laisse le texte intact quand un bloc n’est jamais refermé', () => {
-    const texte = 'avant\n```bash\npas de fermeture\nsuite du fichier';
+    const texte = `avant\n${F}bash\npas de fermeture\nsuite du fichier`;
     expect(retirerCode(texte)).toContain('suite du fichier');
   });
 });
@@ -200,7 +203,7 @@ describe('validerArticles — résidus Obsidian', () => {
   });
 
   it('ignore les résidus situés dans un bloc de code', () => {
-    const body = 'texte\n```bash\nif [[ -f x ]]; then echo %%; fi\n```\nfin';
+    const body = `texte\n${F}bash\nif [[ -f x ]]; then echo %%; fi\n${F}\nfin`;
     expect(validerArticles([article({ body })])).toEqual([]);
   });
 
@@ -209,7 +212,7 @@ describe('validerArticles — résidus Obsidian', () => {
     expect(validerArticles([article({ body })])).toEqual([]);
   });
 });
-````
+```
 
 - [ ] **Step 2 : lancer les tests pour vérifier qu'ils échouent**
 
@@ -312,7 +315,7 @@ git commit -m "Détection des résidus Obsidian, hors blocs de code"
 
 Ajouter à la fin de `src/content/article-validation.test.ts` (l'import en tête devient `import { retirerCode, validerArticles, formaterErreurs, type ArticleÀValider } from './article-validation';`) :
 
-````typescript
+```typescript
 describe('validerArticles — identifiant', () => {
   it('accepte un id en kebab ASCII', () => {
     expect(validerArticles([article({ id: 'mon-article-2' })])).toEqual([]);
@@ -377,7 +380,7 @@ describe('validerArticles — titre de niveau 1', () => {
   });
 
   it('accepte un article commençant par un bloc de code', () => {
-    const body = '```bash\n# commentaire shell\n```\n\nsuite';
+    const body = `${F}bash\n# commentaire shell\n${F}\n\nsuite`;
     expect(validerArticles([article({ body })])).toEqual([]);
   });
 
@@ -405,7 +408,7 @@ describe('formaterErreurs', () => {
     expect(formaterErreurs(['a.md : seule'])).toContain('1 erreur');
   });
 });
-````
+```
 
 - [ ] **Step 2 : lancer les tests pour vérifier qu'ils échouent**
 
