@@ -20,6 +20,12 @@ export interface AnalyseCorps {
   prose: string;
   /** Ligne (1-indexée) ouvrant un bloc jamais refermé, sinon null. */
   ligneOuvertureNonFermee: number | null;
+  /**
+   * Ligne ouvrant un bloc à l'intérieur duquel apparaît une autre ouverture de
+   * même nature. Signe d'une clôture oubliée : la prose du milieu est alors
+   * lue comme du code et échappe à tout contrôle.
+   */
+  ligneClotureOubliee: number | null;
 }
 
 /** Ouverture de bloc clôturé : 3+ accents graves ou tildes, en début de ligne. */
@@ -54,6 +60,7 @@ export function analyserCorps(body: string): AnalyseCorps {
   let ligneOuverture = 0;
   let precedenteVide = true;
   let dansIndente = false;
+  let ligneClotureOubliee: number | null = null;
 
   body.split('\n').forEach((ligne, index) => {
     if (delimiteur !== null) {
@@ -62,7 +69,23 @@ export function analyserCorps(body: string): AnalyseCorps {
       const fermeture = new RegExp(
         `^ {0,3}\\${delimiteur[0]}{${delimiteur.length},}\\s*$`,
       );
-      if (fermeture.test(ligne)) delimiteur = null;
+      if (fermeture.test(ligne)) {
+        delimiteur = null;
+        return;
+      }
+      // Une ouverture de même nature à l'intérieur d'un bloc n'est presque
+      // jamais voulue : démontrer une fence demande un délimiteur plus long.
+      // C'est donc le signe d'une clôture oubliée, et le bloc avale la prose.
+      const interne = OUVERTURE.exec(ligne);
+      if (
+        ligneClotureOubliee === null &&
+        interne &&
+        interne[1][0] === delimiteur[0] &&
+        interne[1].length >= delimiteur.length &&
+        interne[2].trim() !== ''
+      ) {
+        ligneClotureOubliee = ligneOuverture;
+      }
       return;
     }
 
@@ -95,6 +118,7 @@ export function analyserCorps(body: string): AnalyseCorps {
   return {
     prose: prose.join('\n').replace(CODE_EN_LIGNE, ''),
     ligneOuvertureNonFermee: delimiteur === null ? null : ligneOuverture,
+    ligneClotureOubliee,
   };
 }
 
@@ -121,9 +145,16 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
       erreurs.push(`${article.filePath} : titre de niveau 1 en tête du corps`);
     }
 
-    const { prose: texte, ligneOuvertureNonFermee } = analyserCorps(
-      article.body,
-    );
+    const {
+      prose: texte,
+      ligneOuvertureNonFermee,
+      ligneClotureOubliee,
+    } = analyserCorps(article.body);
+    if (ligneClotureOubliee !== null) {
+      erreurs.push(
+        `${article.filePath} : bloc de code non refermé, ouvert ligne ${ligneClotureOubliee} du corps — une autre ouverture apparaît avant toute clôture`,
+      );
+    }
     if (ligneOuvertureNonFermee !== null) {
       erreurs.push(
         `${article.filePath} : bloc de code jamais refermé, ouvert ligne ${ligneOuvertureNonFermee} du corps`,
@@ -140,7 +171,7 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
         `${article.filePath} : wikilink Obsidian ([[) dans le corps`,
       );
     }
-    if (texte.includes('%%')) {
+    if (/%%[\s\S]*?%%/.test(texte)) {
       erreurs.push(
         `${article.filePath} : commentaire Obsidian (%%) dans le corps`,
       );
