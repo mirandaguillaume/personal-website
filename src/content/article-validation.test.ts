@@ -245,3 +245,42 @@ describe('validerArticles — ancrages', () => {
     expect(erreurs.some((e) => e.includes('niveau 1'))).toBe(true);
   });
 });
+
+describe('validerArticles — clôture oubliée entre deux blocs', () => {
+  it('signale une ouverture de bloc rencontrée à l’intérieur d’un bloc', () => {
+    const body = [
+      'intro',
+      `${F}bash`,
+      'oubli de fermeture',
+      '',
+      'prose avec %%commentaire%% réel',
+      '',
+      `${F}bash`,
+      'if [[ -f x ]]; then :; fi',
+      F,
+      'fin',
+    ].join('\n');
+    const erreurs = validerArticles([article({ body })]);
+    expect(erreurs.some((e) => e.includes('non refermé'))).toBe(true);
+    expect(erreurs.some((e) => e.includes('ligne 2'))).toBe(true);
+  });
+
+  it('accepte une fence courte démontrée dans une fence plus longue', () => {
+    const body = [`${F}\``, `${F}bash`, 'echo 1;', F, `${F}\``].join('\n');
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+});
+
+describe('validerArticles — commentaire Obsidian', () => {
+  it('accepte un %% littéral isolé en prose', () => {
+    const body = 'un printf affiche %% littéral ici';
+    expect(validerArticles([article({ body })])).toEqual([]);
+  });
+
+  it('refuse un commentaire Obsidian apparié', () => {
+    const erreurs = validerArticles([
+      article({ body: 'texte %%note privée%% fin' }),
+    ]);
+    expect(erreurs.some((e) => e.includes('commentaire'))).toBe(true);
+  });
+});
