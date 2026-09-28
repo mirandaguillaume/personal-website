@@ -10,6 +10,20 @@ npm install
 npm run dev
 ```
 
+## Prérequis sur un nouveau poste
+
+L'identité git de ce dépôt est **locale** et vit dans `.git/config`, qui n'est
+pas versionné : un nouveau clone repart donc sur l'identité git globale de la
+machine. Après `git clone`, avant tout commit :
+
+```bash
+git config --local user.name "mirandaguillaume"
+git config --local user.email "guillaume11miranda@gmail.com"
+```
+
+Vérifier avec `git config --local user.email`. Sans cette étape, les commits
+portent l'identité globale, qui peut être une adresse professionnelle.
+
 ## Vérifications
 
 ```bash
@@ -67,6 +81,27 @@ c'est délibéré, un `hreflang` manquant ne se remarquerait pas autrement.
 La résolution passe par `getPublishedPosts()`, donc une traduction restée en
 brouillon n'est pas déclarée : mieux vaut aucun `hreflang` qu'un `hreflang`
 pointant vers une page absente du site publié.
+
+### Contraintes vérifiées au build
+
+Le build refuse un article publié qui enfreint l'une de ces règles, et nomme le
+fichier fautif :
+
+| Règle                                           | Portée                    |
+| ----------------------------------------------- | ------------------------- |
+| `title` et `description` non vides              | frontmatter               |
+| `pubDate` postérieure au 2000-01-01             | frontmatter               |
+| `tags` et `translationKey` en kebab minuscule   | frontmatter               |
+| `translationKey` unique au sein d'une langue    | entre articles            |
+| Nom de fichier en kebab ASCII minuscule         | fichier                   |
+| Aucun `[[`, `![[`, `%%` ni `> [!` dans le corps | corps, hors blocs de code |
+| Pas de titre de niveau 1 en tête du corps       | corps                     |
+
+Les brouillons (`draft: true`) échappent à ces contrôles : une note en cours de
+rédaction contient légitimement de la syntaxe Obsidian.
+
+Lancer les contrôles : `npm run test` (unitaires) et `npm run test:e2e`
+(le build refuse-t-il bien un article invalide).
 
 ## Brouillons
 
