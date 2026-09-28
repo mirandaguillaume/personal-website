@@ -5,9 +5,11 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
   lang: Lang;
+  /** Relayé au sélecteur de langue. */
+  alternate?: string | null;
 }
 
-const { lang } = Astro.props;
+const { lang, alternate } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
@@ -22,6 +24,6 @@ const translatePath = useTranslatedPath(lang);
       <li><a href={translatePath('/cv/')}>{t('nav.cv')}</a></li>
       <li><a href={translatePath('/contact/')}>{t('nav.contact')}</a></li>
     </ul>
-    <LanguageSwitcher lang={lang} />
+    <LanguageSwitcher lang={lang} alternate={alternate} />
   </nav>
 </header>
