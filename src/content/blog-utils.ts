@@ -24,14 +24,12 @@ export async function getPublishedPosts(collection: Collection) {
 
   if (!dejaValide.has(collection)) {
     const erreurs = validerArticles(
-      publies.map(
-        (post): ArticleÀValider => ({
-          filePath: post.filePath ?? `${collection}/${post.id}.md`,
-          id: post.id,
-          translationKey: post.data.translationKey,
-          body: post.body ?? '',
-        }),
-      ),
+      publies.map((post): ArticleÀValider => ({
+        filePath: post.filePath ?? `${collection}/${post.id}.md`,
+        id: post.id,
+        translationKey: post.data.translationKey,
+        body: post.body ?? '',
+      })),
     );
     if (erreurs.length > 0) {
       throw new Error(formaterErreurs(erreurs));
