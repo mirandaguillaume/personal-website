@@ -1,9 +1,15 @@
 ---
-title: 'Mutation testing : vos tests testent-ils vraiment quelque chose ?'
-description: 'Le taux de couverture ne dit rien sur la qualité de vos tests. Le mutation testing, si — et ça peut vous éviter un vrai incident en prod.'
+title: "Mutation testing : vos tests testent-ils vraiment quelque chose ?"
+description: Le taux de couverture ne dit rien sur la qualité de vos tests. Le mutation testing, si — et ça peut vous éviter un vrai incident en prod.
 pubDate: 2026-08-20
-tags: ['testing', 'php', 'mutation-testing']
-translationKey: 'mutation-testing'
+tags:
+  - testing
+  - php
+  - mutation-testing
+translationKey: mutation-testing
+slug: mutation-testing-vos-tests-testent-ils-vraiment-quelque-chose
+lang: fr
+share: true
 ---
 
 ## Le scénario du quotidien

@@ -2,6 +2,12 @@ import { defineCollection } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { KEBAB } from './content/article-validation';
+import { findArticlesHorsLangue } from './content/articles-hors-langue';
+
+const horsLangue = findArticlesHorsLangue('./src/content/blog');
+if (horsLangue.length > 0) {
+  throw new Error(`Article(s) hors de fr/ et en/ : ${horsLangue.join(', ')}`);
+}
 
 /** Un `pubDate:` vide vaut null en YAML, que z.coerce.date() rend 1970. */
 const DATE_MINIMALE = new Date('2000-01-01');
