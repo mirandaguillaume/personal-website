@@ -105,6 +105,19 @@ describe('validerArticles — identifiant', () => {
   it('refuse un id en majuscules', () => {
     expect(validerArticles([article({ id: 'MonArticle' })])).toHaveLength(1);
   });
+
+  it('refuse un nom de fichier hors kebab même quand l’id a été normalisé', () => {
+    // Cas d'Enveloppe avec un slug vide : le fichier garde le nom de la note,
+    // et Astro en tire un id valide. Seul le nom de fichier trahit l'oubli.
+    const erreurs = validerArticles([
+      article({
+        filePath: 'src/content/blog/fr/zz-essai slug vide.md',
+        id: 'zz-essai-slug-vide',
+      }),
+    ]);
+    expect(erreurs).toHaveLength(1);
+    expect(erreurs[0]).toContain('nom de fichier');
+  });
 });
 
 describe('validerArticles — unicité de translationKey', () => {

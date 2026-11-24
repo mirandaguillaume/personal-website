@@ -137,6 +137,17 @@ export function validerArticles(articles: ArticleÀValider[]): string[] {
       );
     }
 
+    // Astro normalise l'id tiré du nom de fichier : « mon article.md » devient
+    // « mon-article ». Le nom lui-même doit donc être contrôlé à part (un slug
+    // oublié dans le vault produit exactement ce cas).
+    const nomFichier =
+      article.filePath.split(/[/\\]/).at(-1)?.replace(/\.md$/, '') ?? '';
+    if (!KEBAB.test(nomFichier)) {
+      erreurs.push(
+        `${article.filePath} : nom de fichier « ${nomFichier} » hors kebab ASCII minuscule`,
+      );
+    }
+
     // Le H1 se juge sur le corps BRUT : retirer les blocs de code ferait
     // remonter une ligne située plus bas en « première ligne ».
     const premiereLigne =
