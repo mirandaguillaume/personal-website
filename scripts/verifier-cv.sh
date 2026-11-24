@@ -52,7 +52,10 @@ else
   ok "freelance non daté de 2023"
 fi
 
-for pdf in dist/cv/guillaume-miranda-cv-fr.pdf dist/cv/guillaume-miranda-cv-en.pdf; do
+contient "$FR" 'data-cv="pdf-detaille" href="/cv/guillaume-miranda-cv-detaille-fr.pdf"' "FR : lien vers le CV détaillé"
+contient "$EN" 'data-cv="pdf-detaille" href="/cv/guillaume-miranda-cv-detaille-fr.pdf"' "EN : lien vers le CV détaillé"
+
+for pdf in dist/cv/guillaume-miranda-cv-fr.pdf dist/cv/guillaume-miranda-cv-en.pdf dist/cv/guillaume-miranda-cv-detaille-fr.pdf; do
   if [ -f "$pdf" ]; then ok "$pdf publié"; else ko "$pdf absent"; fi
 done
 
