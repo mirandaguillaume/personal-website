@@ -6,20 +6,18 @@ Blog et vitrine professionnelle bilingue (FR par défaut sans préfixe, EN sous 
 construits avec Astro 7, sortie statique, déployés sur Vercel. Les articles sont des fichiers
 Markdown en content collections ; un build strict refuse tout article publié invalide.
 
-## État au 2026-11-02
+## État au 2026-11-24
 
 - Branche principale : `main` (suit `origin/main`). Dernier commit : « Durcir la validation des
   articles publiés (#26) ». Une PR par fonctionnalité, branches distantes déjà fusionnées
   (SEO, brouillons, bio, mutation testing, refonte visuelle, etc.).
 - Premier article publié : mutation testing (FR et EN). Deux articles **en brouillon**
-  (`draft: true`, non publiés) sont présents mais non suivis par Git :
-  `src/content/blog/fr/llm-probabiliste-process-deterministe.md` et
-  `src/content/blog/en/llm-is-probabilistic-your-process-shouldnt-be.md` (clé de traduction
+  (`draft: true`, non publiés) : `src/content/blog/fr/llm-probabiliste-process-deterministe.md`
+  et `src/content/blog/en/llm-is-probabilistic-your-process-shouldnt-be.md` (clé de traduction
   `workflows-deterministes`).
-- Travail local non commité, sauvegardé le 2026-11-02 sur la branche `wip/sauvegarde-2026-11-02`
-  (locale et poussée sur `origin`, commit `2ee945c`, 74 fichiers) : ces deux brouillons plus
-  `docs/idees-articles/` (environ 70 fiches d'idées d'articles, dont `llm-supplementaires/`
-  et deux plans détaillés dans `plans-detailles/`). Aucun stash.
+- Les idées d'articles (72 fiches, dont deux plans détaillés) sont privées : elles vivent dans le
+  vault de notes local, hors de ce dépôt public. `docs/idees-articles/` est ignoré par Git pour
+  éviter qu'elles y reviennent par erreur.
 
 ## Installer et lancer
 
@@ -41,19 +39,14 @@ personnel, puis vérifier avec `git config --local user.email`.
 
 ## Où j'en étais et prochaines étapes
 
-1. Décider du sort de `wip/sauvegarde-2026-11-02` : intégrer les deux brouillons et le dossier
-   `docs/idees-articles/` à `main` (via une PR, `main` est protégée), ou les garder hors du dépôt public.
-   Les fiches d'idées sont des plans « à rédiger » (statut « idée, non rédigée ») ; à relire
-   avant publication car le dépôt est public.
-2. Terminer puis publier les deux brouillons sur le déterminisme des workflows autour d'un LLM
+1. Terminer puis publier les deux brouillons sur le déterminisme des workflows autour d'un LLM
    (passer `draft` à `false`, vérifier `translationKey` identique en FR/EN).
-3. Pour prévisualiser des brouillons sur Vercel : déclarer `SHOW_DRAFTS=true` limité à
+2. Pour prévisualiser des brouillons sur Vercel : déclarer `SHOW_DRAFTS=true` limité à
    l'environnement Preview (Project Settings -> Environment Variables).
-4. Publication depuis Obsidian : le plugin Enveloppe (PR vers ce dépôt, `lang` du frontmatter
+3. Publication depuis Obsidian : le plugin Enveloppe (PR vers ce dépôt, `lang` du frontmatter
    décide de la destination) était prévu mais pas encore en service ; la spec qui le décrit vit
    dans le vault de notes local, pas dans ce dépôt.
-5. Idées d'articles priorisées dans `docs/idees-articles/` (plans 1 et 5 détaillés dans
-   `plans-detailles/`).
+4. Idées d'articles priorisées : dans le vault de notes (plans 1 et 5 détaillés).
 
 ## À fournir hors dépôt
 
