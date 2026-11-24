@@ -25,6 +25,7 @@ export const ui = {
     'cv.subtitle':
       "Développeur PHP/Symfony freelance, plus de dix ans de PHP, des intranets en PHP 4 aux API qui suivent 11 milliards d'objets. Je reprends le legacy, je l'audite et je le rends sûr à faire évoluer, tests à l'appui.",
     'cv.contact': 'Me contacter',
+    'cv.download': 'Télécharger le CV (PDF)',
     'cv.offers': 'Ce que je propose',
     'cv.proof': 'Référence',
     'cv.missions': 'Missions phares',
@@ -50,6 +51,7 @@ export const ui = {
     'cv.subtitle':
       'Freelance PHP/Symfony developer with over ten years of PHP, from PHP 4 intranets to APIs tracking 11 billion items. I take over legacy code, audit it and make it safe to evolve, backed by tests.',
     'cv.contact': 'Get in touch',
+    'cv.download': 'Download resume (PDF)',
     'cv.offers': 'What I offer',
     'cv.proof': 'Track record',
     'cv.missions': 'Key assignments',

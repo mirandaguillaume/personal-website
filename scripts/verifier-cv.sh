@@ -6,8 +6,11 @@ set -uo pipefail
 
 cd "$(dirname "$0")/.."
 JOURNAL="$(mktemp)"
+OFFRES=src/data/offers.json
+SAUVEGARDE="$(mktemp)"
+cp "$OFFRES" "$SAUVEGARDE"
 fail=0
-trap 'rm -f "$JOURNAL"' EXIT
+trap 'cp "$SAUVEGARDE" "$OFFRES"; rm -f "$JOURNAL" "$SAUVEGARDE"' EXIT
 
 ok() { echo "ok   - $1"; }
 ko() { echo "FAIL - $1"; fail=1; }
@@ -48,5 +51,21 @@ if grep -Eqi '(freelance|indépendant)[^<]{0,80}2023|2023[^<]{0,80}(freelance|in
 else
   ok "freelance non daté de 2023"
 fi
+
+for pdf in dist/cv/guillaume-miranda-cv-fr.pdf dist/cv/guillaume-miranda-cv-en.pdf; do
+  if [ -f "$pdf" ]; then ok "$pdf publié"; else ko "$pdf absent"; fi
+done
+
+# Une donnée modifiée sans régénérer les PDF doit casser le build.
+printf ' ' >> "$OFFRES"
+if npm run build > "$JOURNAL" 2>&1; then
+  ko "PDF périmé : le build a réussi"
+elif grep -q "PDF du CV périmé" "$JOURNAL"; then
+  ok "PDF périmé : le build échoue"
+else
+  ko "PDF périmé : le build échoue sans le bon message"
+  sed -n '1,20p' "$JOURNAL"
+fi
+cp "$SAUVEGARDE" "$OFFRES"
 
 exit $fail

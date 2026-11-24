@@ -8,7 +8,9 @@ import OfferList from './OfferList.astro';
 import MissionCard from './MissionCard.astro';
 import SkillGroups from './SkillGroups.astro';
 import TimelineItem from '../TimelineItem.astro';
+import CvPrintHeader from './CvPrintHeader.astro';
 import '../../styles/cv.css';
+import '../../styles/cv-print.css';
 
 interface Props {
   lang: Lang;
@@ -51,7 +53,8 @@ const missionsPhares = experiences
   .sort((a, b) => b.tri - a.tri);
 ---
 
-<CvHero lang={lang}><slot name="downloads" /></CvHero>
+<CvPrintHeader />
+<CvHero lang={lang} />
 
 <section class="cv-section">
   <h2>{t('cv.offers')}</h2>

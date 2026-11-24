@@ -7,7 +7,12 @@ import {
   trouverTextesInvalides,
   type ExperienceBrute,
 } from './content/cv-validation';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import {
+  calculerEmpreinte,
+  FICHIER_EMPREINTE,
+  listerSourcesCv,
+} from './cv/empreinte';
 
 const experiencesBrutes = JSON.parse(
   readFileSync('./src/data/experience.json', 'utf-8'),
@@ -15,6 +20,21 @@ const experiencesBrutes = JSON.parse(
 const textesInvalides = trouverTextesInvalides(experiencesBrutes);
 if (textesInvalides.length > 0) {
   throw new Error(`Données du CV invalides :\n${textesInvalides.join('\n')}`);
+}
+
+// Les PDF du CV sont générés en local (npm run cv:pdf) : le build refuse
+// des PDF qui ne correspondent plus aux sources. Le script de génération
+// construit lui-même le site, d'où l'échappatoire CV_PDF_GENERATION.
+if (process.env.CV_PDF_GENERATION !== '1') {
+  const attendue = calculerEmpreinte(listerSourcesCv(), (chemin) =>
+    readFileSync(chemin, 'utf-8'),
+  );
+  const enregistree = existsSync(FICHIER_EMPREINTE)
+    ? readFileSync(FICHIER_EMPREINTE, 'utf-8').trim()
+    : '';
+  if (enregistree !== attendue) {
+    throw new Error('PDF du CV périmé : lancez npm run cv:pdf');
+  }
 }
 
 const horsLangue = findArticlesHorsLangue('./src/content/blog');

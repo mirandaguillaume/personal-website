@@ -18,6 +18,11 @@ const translatePath = useTranslatedPath(lang);
     <a class="cv-button" data-cv="contact" href={translatePath('/contact/')}
       >{t('cv.contact')}</a
     >
-    <slot />
+    <a
+      class="cv-button cv-button--secondary"
+      data-cv="pdf"
+      href={`/cv/guillaume-miranda-cv-${lang}.pdf`}
+      download>{t('cv.download')}</a
+    >
   </p>
 </header>

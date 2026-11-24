@@ -1,0 +1,13 @@
+---
+// Coordonnées du CV imprimé (et donc du PDF) : à l'écran, la page de contact
+// suffit. Jamais de numéro de téléphone.
+const site = Astro.site?.host ?? '';
+---
+
+<div class="cv-print-header">
+  <p class="cv-print-header__name">Guillaume Miranda</p>
+  <p>
+    Paris · guillaume11miranda@gmail.com · {site} · linkedin.com/in/guillaume-miranda
+    · github.com/mirandaguillaume
+  </p>
+</div>
