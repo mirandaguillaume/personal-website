@@ -32,8 +32,8 @@ const education = (await getCollection('education')).sort(
 );
 const engagements = await getCollection('engagements');
 
-// Une mission sans date prend la période du poste qui la porte ; « via »
-// nomme l'employeur, sauf pour les missions en freelance.
+// Une mission sans date n'affiche pas de période (celle du poste serait
+// prise pour sa durée) ; « via » nomme l'employeur, sauf en freelance.
 const missionsPhares = experiences
   .flatMap(({ data: poste }) =>
     poste.missions
@@ -42,7 +42,7 @@ const missionsPhares = experiences
         mission,
         via:
           poste.organization === 'Freelance' ? undefined : poste.organization,
-        periode: formaterPeriode(lang, mission) ?? formaterPeriode(lang, poste),
+        periode: formaterPeriode(lang, mission),
         tri:
           mission.startDate?.valueOf() ??
           (mission.year

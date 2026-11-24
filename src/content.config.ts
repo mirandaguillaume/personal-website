@@ -24,7 +24,9 @@ if (textesInvalides.length > 0) {
 
 // Les PDF du CV sont générés en local (npm run cv:pdf) : le build refuse
 // des PDF qui ne correspondent plus aux sources. Le script de génération
-// construit lui-même le site, d'où l'échappatoire CV_PDF_GENERATION.
+// construit lui-même le site, d'où l'échappatoire CV_PDF_GENERATION. Hors
+// build (astro dev, astro check), un avertissement suffit : on doit pouvoir
+// voir une modification avant de régénérer les PDF.
 if (process.env.CV_PDF_GENERATION !== '1') {
   const attendue = calculerEmpreinte(listerSourcesCv(), (chemin) =>
     readFileSync(chemin, 'utf-8'),
@@ -33,7 +35,9 @@ if (process.env.CV_PDF_GENERATION !== '1') {
     ? readFileSync(FICHIER_EMPREINTE, 'utf-8').trim()
     : '';
   if (enregistree !== attendue) {
-    throw new Error('PDF du CV périmé : lancez npm run cv:pdf');
+    const message = 'PDF du CV périmé : lancez npm run cv:pdf';
+    if (process.argv.includes('build')) throw new Error(message);
+    console.warn(message);
   }
 }
 

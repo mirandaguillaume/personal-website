@@ -21,9 +21,11 @@ const translatePath = useTranslatedPath(lang);
         <p>{data.method[lang]}</p>
         {data.proof && (
           <p class="cv-offer__proof">
-            <strong>{t('cv.proof')} :</strong>{' '}
+            <strong>{t('cv.proof')}</strong>{' '}
             {data.proof.href ? (
-              <a href={translatePath(data.proof.href)}>
+              <a
+                href={new URL(translatePath(data.proof.href), Astro.site).href}
+              >
                 {data.proof.text[lang]}
               </a>
             ) : (

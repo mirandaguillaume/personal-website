@@ -1,8 +1,9 @@
 // Génère les PDF du CV (FR et EN) à partir des pages construites, puis
 // enregistre l'empreinte des sources que le build vérifie. À lancer en local
 // après toute modification du CV : npm run cv:pdf. Jamais exécuté sur Vercel.
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
+import { preview } from 'astro';
 import { chromium } from 'playwright';
 import {
   calculerEmpreinte,
@@ -11,6 +12,7 @@ import {
 } from '../src/cv/empreinte.ts';
 
 const PORT = 4329;
+const PAGES_MAX = 2;
 const PAGES = [
   { lang: 'fr', chemin: '/cv/' },
   { lang: 'en', chemin: '/en/cv/' },
@@ -28,16 +30,40 @@ async function attendreServeur(url: string): Promise<void> {
   throw new Error(`Serveur injoignable : ${url}`);
 }
 
+async function portLibre(url: string): Promise<boolean> {
+  try {
+    await fetch(url);
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+/** Nombre de pages d'un PDF produit par Chromium (objets /Type /Page). */
+function compterPages(pdf: Buffer): number {
+  return (pdf.toString('latin1').match(/\/Type\s*\/Page(?!s)/g) ?? []).length;
+}
+
+// Un serveur déjà présent sur le port (un aperçu resté ouvert, un autre
+// clone) servirait un autre dist/ que celui qu'on certifie.
+if (!(await portLibre(`http://127.0.0.1:${PORT}/`))) {
+  throw new Error(
+    `Le port ${PORT} est déjà occupé : arrêtez le serveur qui l'utilise.`,
+  );
+}
+
 execFileSync('npm', ['run', 'build'], {
   stdio: 'inherit',
   env: { ...process.env, CV_PDF_GENERATION: '1' },
 });
 
-const apercu = spawn(
-  'npx',
-  ['astro', 'preview', '--port', String(PORT), '--host', '127.0.0.1'],
-  { stdio: 'ignore' },
-);
+// Serveur d'aperçu dans ce même processus (API d'Astro) : `astro preview` en
+// ligne de commande délègue à un processus qu'on ne peut plus arrêter.
+const apercu = await preview({
+  root: '.',
+  logLevel: 'error',
+  server: { port: PORT, host: '127.0.0.1' },
+});
 
 try {
   await attendreServeur(`http://127.0.0.1:${PORT}/cv/`);
@@ -49,16 +75,22 @@ try {
     });
     await page.emulateMedia({ media: 'print' });
     const fichier = `public/cv/guillaume-miranda-cv-${lang}.pdf`;
-    await page.pdf({
-      path: fichier,
+    const pdf = await page.pdf({
       preferCSSPageSize: true,
       printBackground: true,
     });
-    console.log(`PDF écrit : ${fichier}`);
+    const pages = compterPages(pdf);
+    if (pages > PAGES_MAX) {
+      throw new Error(
+        `${fichier} ferait ${pages} pages (${PAGES_MAX} au plus).`,
+      );
+    }
+    writeFileSync(fichier, pdf);
+    console.log(`PDF écrit : ${fichier} (${pages} pages)`);
   }
   await navigateur.close();
 } finally {
-  apercu.kill();
+  await apercu.stop();
 }
 
 const empreinte = calculerEmpreinte(listerSourcesCv(), (chemin) =>

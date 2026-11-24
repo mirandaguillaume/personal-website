@@ -1,13 +1,34 @@
 ---
 // Coordonnées du CV imprimé (et donc du PDF) : à l'écran, la page de contact
 // suffit. Jamais de numéro de téléphone.
-const site = Astro.site?.host ?? '';
+const site = Astro.site;
+const liens = [
+  {
+    href: 'mailto:guillaume11miranda@gmail.com',
+    texte: 'guillaume11miranda@gmail.com',
+  },
+  { href: site?.href ?? '', texte: site?.host ?? '' },
+  {
+    href: 'https://www.linkedin.com/in/guillaume-miranda/',
+    texte: 'linkedin.com/in/guillaume-miranda',
+  },
+  {
+    href: 'https://github.com/mirandaguillaume',
+    texte: 'github.com/mirandaguillaume',
+  },
+];
 ---
 
 <div class="cv-print-header">
   <p class="cv-print-header__name">Guillaume Miranda</p>
   <p>
-    Paris · guillaume11miranda@gmail.com · {site} · linkedin.com/in/guillaume-miranda
-    · github.com/mirandaguillaume
+    Paris{
+      liens.map((lien) => (
+        <>
+          {' · '}
+          <a href={lien.href}>{lien.texte}</a>
+        </>
+      ))
+    }
   </p>
 </div>

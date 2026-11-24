@@ -121,4 +121,12 @@
     color: var(--ink);
     text-decoration: none;
   }
+
+  /* Liens en clair : un PDF imprimé ou lu sans clic garde l'adresse. */
+  .cv-section a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
 }
