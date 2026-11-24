@@ -1,3 +1,5 @@
 dist/
 .astro/
 .superpowers/
+# Articles écrits par Enveloppe depuis le vault : c'est son format qui fait foi
+src/content/blog/
