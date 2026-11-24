@@ -1,0 +1,27 @@
+---
+import type { Lang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  client: string;
+  role?: string;
+  periode: string | null;
+  via?: string;
+  achievements: string[];
+  stack: string[];
+  lang: Lang;
+}
+
+const { client, role, periode, via, achievements, stack, lang } = Astro.props;
+const t = useTranslations(lang);
+const meta = [role, periode, via && `${t('cv.via')} ${via}`].filter(Boolean);
+---
+
+<article class="article-card cv-mission" data-mission={client}>
+  <h3 class="article-card__title">{client}</h3>
+  {meta.length > 0 && <p class="article-card__date">{meta.join(' · ')}</p>}
+  <ul>
+    {achievements.map((item) => <li>{item}</li>)}
+  </ul>
+  {stack.length > 0 && <p class="cv-stack">{stack.join(' · ')}</p>}
+</article>

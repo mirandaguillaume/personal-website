@@ -1,25 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import TimelineItem from '../../components/TimelineItem.astro';
-import { getCollection } from 'astro:content';
+import CvPage from '../../components/cv/CvPage.astro';
+import { useTranslations } from '../../i18n/utils';
 
-const experiences = (await getCollection('experience')).sort(
-  (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
-);
+const t = useTranslations('en');
 ---
 
-<BaseLayout lang="en" title="Resume" description="My professional experience.">
-  <h1>Experience</h1>
-  {
-    experiences.map((experience) => (
-      <TimelineItem
-        role={experience.data.role.en}
-        organization={experience.data.organization}
-        startDate={experience.data.startDate}
-        endDate={experience.data.endDate}
-        description={experience.data.summary.en}
-        lang="en"
-      />
-    ))
-  }
+<BaseLayout lang="en" title={t('cv.title')} description={t('cv.description')}>
+  <CvPage lang="en" />
 </BaseLayout>

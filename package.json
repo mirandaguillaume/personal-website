@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "test:e2e": "./scripts/verifier-build-refuse-article-invalide.sh && ./scripts/verifier-frontmatter-enveloppe.sh",
+    "test:e2e": "./scripts/verifier-build-refuse-article-invalide.sh && ./scripts/verifier-frontmatter-enveloppe.sh && ./scripts/verifier-cv.sh",
     "check": "astro check",
     "lint": "eslint .",
     "format": "prettier --write .",

@@ -1,0 +1,23 @@
+---
+import type { Lang } from '../../i18n/ui';
+import { useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<header class="hero cv-hero">
+  <h1 class="cv-hero__hook">{t('cv.hook')}</h1>
+  <p class="hero__desc cv-hero__subtitle">{t('cv.subtitle')}</p>
+  <p class="cv-hero__actions">
+    <a class="cv-button" data-cv="contact" href={translatePath('/contact/')}
+      >{t('cv.contact')}</a
+    >
+    <slot />
+  </p>
+</header>
