@@ -1,0 +1,52 @@
+[
+  {
+    "id": "langages",
+    "order": 1,
+    "label": { "fr": "Langages", "en": "Languages" },
+    "items": [
+      "PHP",
+      "SQL (PostgreSQL, MySQL)",
+      "Bash",
+      {
+        "fr": "Rust et Go (projets personnels)",
+        "en": "Rust and Go (side projects)"
+      }
+    ]
+  },
+  {
+    "id": "frameworks",
+    "order": 2,
+    "label": { "fr": "Frameworks et données", "en": "Frameworks and data" },
+    "items": [
+      "Symfony",
+      "Akeneo PIM",
+      "Elasticsearch / OpenSearch",
+      "RabbitMQ",
+      "Kafka"
+    ]
+  },
+  {
+    "id": "qualite",
+    "order": 3,
+    "label": { "fr": "Qualité", "en": "Quality" },
+    "items": ["PHPUnit", "PHPStan", "Behat", "Cypress", "Mutation testing"]
+  },
+  {
+    "id": "pratiques",
+    "order": 4,
+    "label": { "fr": "Pratiques", "en": "Practices" },
+    "items": [
+      "Clean Architecture",
+      { "fr": "Architecture hexagonale", "en": "Hexagonal architecture" },
+      "DDD",
+      "TDD",
+      "BDD"
+    ]
+  },
+  {
+    "id": "outils",
+    "order": 5,
+    "label": { "fr": "Outils", "en": "Tools" },
+    "items": ["Git", "Docker", "GitLab"]
+  }
+]

@@ -17,7 +17,7 @@ const experiences = (await getCollection('experience')).sort(
         organization={experience.data.organization}
         startDate={experience.data.startDate}
         endDate={experience.data.endDate}
-        description={experience.data.description.en}
+        description={experience.data.summary.en}
         lang="en"
       />
     ))

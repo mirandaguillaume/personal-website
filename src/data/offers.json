@@ -1,0 +1,57 @@
+[
+  {
+    "id": "legacy",
+    "order": 1,
+    "title": { "fr": "Reprise de legacy", "en": "Legacy takeover" },
+    "method": {
+      "fr": "Reprendre une application que plus personne n'ose toucher : la comprendre, la sécuriser par des tests, puis la faire évoluer pas à pas.",
+      "en": "Take over an application nobody dares touch anymore: understand it, secure it with tests, then evolve it step by step."
+    },
+    "proof": {
+      "text": {
+        "fr": "Banque Palatine : intranet en PHP 4 sous Windows migré vers PHP 7 et Linux, authentification ActiveX remplacée.",
+        "en": "Banque Palatine: PHP 4 intranet on Windows migrated to PHP 7 and Linux, ActiveX authentication replaced."
+      }
+    }
+  },
+  {
+    "id": "audit",
+    "order": 2,
+    "title": { "fr": "Audit de code", "en": "Code audit" },
+    "method": {
+      "fr": "Un état des lieux mesuré avant de décider : tests de caractérisation, analyse statique, mutation testing et cartographie de la dette.",
+      "en": "A measured assessment before any decision: characterization tests, static analysis, mutation testing and a map of the technical debt."
+    }
+  },
+  {
+    "id": "lead",
+    "order": 3,
+    "title": { "fr": "Lead technique", "en": "Technical leadership" },
+    "method": {
+      "fr": "Donner un cap technique à une équipe et le tenir : architecture, revues de code, pratiques de test.",
+      "en": "Set a technical direction for a team and hold it: architecture, code reviews, testing practices."
+    },
+    "proof": {
+      "text": {
+        "fr": "La Poste : lead dev et assistant architecte, API de suivi de 11 milliards d'objets.",
+        "en": "La Poste: lead developer and assistant architect, tracking API for 11 billion items."
+      }
+    }
+  },
+  {
+    "id": "craftsmanship",
+    "order": 4,
+    "title": { "fr": "Craftsmanship", "en": "Craftsmanship" },
+    "method": {
+      "fr": "Du code qui se lit et se teste : Clean Architecture, DDD, TDD, BDD.",
+      "en": "Code that reads well and tests well: Clean Architecture, DDD, TDD, BDD."
+    },
+    "proof": {
+      "text": {
+        "fr": "Conférence sur le mutation testing à l'AFUP Paris, articles et projets open source.",
+        "en": "Talk on mutation testing at AFUP Paris, articles and open-source projects."
+      },
+      "href": "/projects/"
+    }
+  }
+]
