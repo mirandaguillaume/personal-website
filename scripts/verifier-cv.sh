@@ -6,11 +6,8 @@ set -uo pipefail
 
 cd "$(dirname "$0")/.."
 JOURNAL="$(mktemp)"
-OFFRES=src/data/offers.json
-SAUVEGARDE="$(mktemp)"
-cp "$OFFRES" "$SAUVEGARDE"
 fail=0
-trap 'cp "$SAUVEGARDE" "$OFFRES"; rm -f "$JOURNAL" "$SAUVEGARDE"' EXIT
+trap 'rm -f "$JOURNAL"' EXIT
 
 ok() { echo "ok   - $1"; }
 ko() { echo "FAIL - $1"; fail=1; }
@@ -52,28 +49,17 @@ else
   ok "freelance non daté de 2023"
 fi
 
-contient "$FR" 'data-cv="pdf-detaille" href="/cv/guillaume-miranda-cv-detaille-fr.pdf"' "FR : lien vers le CV détaillé"
-contient "$EN" 'data-cv="pdf-detaille" href="/cv/guillaume-miranda-cv-detaille-fr.pdf"' "EN : lien vers le CV détaillé"
-
-for pdf in dist/cv/guillaume-miranda-cv-fr.pdf dist/cv/guillaume-miranda-cv-en.pdf dist/cv/guillaume-miranda-cv-detaille-fr.pdf; do
-  if [ -f "$pdf" ]; then ok "$pdf publié"; else ko "$pdf absent"; fi
+# Un seul téléchargement, le CV LaTeX, sur les deux pages.
+PDF_CV=dist/cv/guillaume-miranda-cv-fr.pdf
+for page in "$FR" "$EN"; do
+  contient "$page" 'data-cv="pdf" href="/cv/guillaume-miranda-cv-fr.pdf"' "$page : bouton vers le CV PDF"
+  n=$(grep -o 'download' "$page" | wc -l)
+  if [ "$n" = 1 ]; then ok "$page : un seul téléchargement"; else ko "$page : $n téléchargements"; fi
 done
-
-# PDF : pas de lien vers le serveur d'aperçu, texte extractible (ATS,
-# recherche), deux pages au plus.
-for pdf in dist/cv/guillaume-miranda-cv-fr.pdf dist/cv/guillaume-miranda-cv-en.pdf; do
-  if grep -aqE '127\.0\.0\.1|localhost' "$pdf"; then ko "$pdf : lien vers le serveur local"; else ok "$pdf : aucun lien local"; fi
-done
-texte_fr=$(pdftotext dist/cv/guillaume-miranda-cv-fr.pdf - 2>/dev/null)
-texte_en=$(pdftotext dist/cv/guillaume-miranda-cv-en.pdf - 2>/dev/null)
-for attendu in "Missions phares" "La Poste" "mirandaguillaume.github.io"; do
-  if grep -Fq "$attendu" <<<"$texte_fr"; then ok "PDF FR : « $attendu » extractible"; else ko "PDF FR : « $attendu » introuvable au texte"; fi
-done
-if grep -Fq "Key assignments" <<<"$texte_en"; then ok "PDF EN : titres extractibles"; else ko "PDF EN : titres illisibles au texte"; fi
-for pdf in dist/cv/*.pdf; do
-  pages=$(pdfinfo "$pdf" 2>/dev/null | awk '/^Pages/{print $2}')
-  if [ "${pages:-99}" -le 2 ]; then ok "$pdf : $pages page(s)"; else ko "$pdf : ${pages:-?} pages"; fi
-done
+if [ -f "$PDF_CV" ]; then ok "$PDF_CV publié"; else ko "$PDF_CV absent"; fi
+pages=$(pdfinfo "$PDF_CV" 2>/dev/null | awk '/^Pages/{print $2}')
+if [ "${pages:-99}" -le 2 ]; then ok "$PDF_CV : $pages page(s)"; else ko "$PDF_CV : ${pages:-?} pages"; fi
+if ls dist/cv/ | grep -Eq 'cv-en\.pdf|detaille|empreinte'; then ko "anciens PDF générés encore publiés"; else ok "aucun ancien PDF généré"; fi
 
 # Une mission sans date n'affiche pas la période du poste qui la porte.
 carte_palatine=$(grep -o 'data-mission="Banque Palatine".*' "$FR" | sed 's#</article>.*##')
@@ -82,18 +68,7 @@ if grep -q '2019' <<<"$carte_palatine"; then ko "Palatine : période du poste af
 # Typographie anglaise : pas d'espace avant les deux-points.
 if grep -Fq 'Track record :' "$EN"; then ko "EN : espace avant les deux-points"; else ok "EN : deux-points à l'anglaise"; fi
 
-# Une donnée modifiée sans régénérer les PDF doit casser le build.
-printf ' ' >> "$OFFRES"
-if npm run build > "$JOURNAL" 2>&1; then
-  ko "PDF périmé : le build a réussi"
-elif grep -q "PDF du CV périmé" "$JOURNAL"; then
-  ok "PDF périmé : le build échoue"
-else
-  ko "PDF périmé : le build échoue sans le bon message"
-  sed -n '1,20p' "$JOURNAL"
-fi
-# … mais pas le serveur de dev ni astro check, qui passent par astro sync.
-if npx astro sync > "$JOURNAL" 2>&1; then ok "PDF périmé : astro sync (dev) fonctionne"; else ko "PDF périmé : astro sync échoue, le mode dev est cassé"; fi
-cp "$SAUVEGARDE" "$OFFRES"
+# Plus de PDF généré : modifier les données ne doit plus bloquer le build.
+if grep -q "PDF du CV périmé" src/content.config.ts; then ko "contrôle de péremption encore présent"; else ok "aucun contrôle de péremption"; fi
 
 exit $fail
