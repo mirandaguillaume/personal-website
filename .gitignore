@@ -28,3 +28,6 @@ pnpm-debug.log*
 .claude/settings.local.json
 .superpowers/
 .vercel
+
+# idées d'articles : backlog privé, hors du dépôt public
+docs/idees-articles/
