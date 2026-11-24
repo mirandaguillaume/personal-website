@@ -1,0 +1,132 @@
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+
+  html {
+    font-size: 8.6pt;
+    line-height: 1.35;
+  }
+
+  p,
+  ul {
+    margin: 0.15rem 0;
+  }
+
+  li {
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.35rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .cv-offers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1.2rem;
+  }
+
+  .cv-skills {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.1rem 0.8rem;
+    margin: 0;
+  }
+
+  .cv-skills dt,
+  .cv-skills dd {
+    margin: 0;
+  }
+
+  .article-card__date {
+    margin: 0;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .site-header,
+  .site-footer,
+  .language-switcher,
+  .cv-hero__actions {
+    display: none !important;
+  }
+
+  .site-main {
+    max-width: none;
+    padding: 0;
+  }
+
+  .cv-print-header {
+    display: block;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .cv-print-header p {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+
+  .cv-print-header__name {
+    font-family: var(--font-display) !important;
+    font-size: 1.4rem !important;
+    font-weight: 700;
+  }
+
+  .hero {
+    background: none;
+    margin: 0 0 1rem;
+    padding: 0;
+  }
+
+  .cv-hero__hook {
+    max-width: none;
+    font-size: 1.35rem;
+  }
+
+  .hero__desc {
+    max-width: none;
+  }
+
+  .article-card,
+  .timeline-item {
+    background: none;
+    padding: 0;
+    margin-bottom: 0.45rem;
+    break-inside: avoid;
+  }
+
+  .cv-section {
+    margin-bottom: 0.7rem;
+  }
+
+  h2 {
+    break-after: avoid;
+  }
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  /* Liens en clair : un PDF imprimé ou lu sans clic garde l'adresse. */
+  .cv-section a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+  }
+}

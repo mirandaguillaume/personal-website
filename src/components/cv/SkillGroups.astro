@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  skills: CollectionEntry<'skills'>[];
+  lang: Lang;
+}
+
+const { skills, lang } = Astro.props;
+---
+
+<dl class="cv-skills">
+  {
+    skills.map(({ data }) => (
+      <>
+        <dt>{data.label[lang]}</dt>
+        <dd>
+          {data.items
+            .map((item) => (typeof item === 'string' ? item : item[lang]))
+            .join(' · ')}
+        </dd>
+      </>
+    ))
+  }
+</dl>

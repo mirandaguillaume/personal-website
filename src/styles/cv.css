@@ -1,0 +1,64 @@
+.cv-hero__hook {
+  max-width: 24ch;
+}
+
+.cv-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.cv-button {
+  background: var(--olive-deep);
+  color: var(--stone-card);
+  border-radius: var(--radius);
+  padding: 0.55rem 1.1rem;
+  font-family: var(--font-display);
+  text-decoration: none;
+}
+
+.cv-button:hover {
+  background: var(--brick-deep);
+  color: var(--stone-card);
+}
+
+.cv-section {
+  margin-bottom: 2.5rem;
+}
+
+.cv-offer__proof,
+.cv-stack {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}
+
+.cv-stack {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.cv-skills dt {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-top: 0.75rem;
+}
+
+.cv-skills dd {
+  margin: 0.2rem 0 0;
+}
+
+.cv-list {
+  padding-left: 1.2rem;
+}
+
+.cv-print-header {
+  display: none;
+}
+
+.cv-button--secondary {
+  background: none;
+  color: var(--olive-deep);
+  border: 1px solid var(--olive-deep);
+}

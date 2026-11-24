@@ -3,6 +3,43 @@ import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { KEBAB } from './content/article-validation';
 import { findArticlesHorsLangue } from './content/articles-hors-langue';
+import {
+  trouverTextesInvalides,
+  type ExperienceBrute,
+} from './content/cv-validation';
+import { existsSync, readFileSync } from 'node:fs';
+import {
+  calculerEmpreinte,
+  FICHIER_EMPREINTE,
+  listerSourcesCv,
+} from './cv/empreinte';
+
+const experiencesBrutes = JSON.parse(
+  readFileSync('./src/data/experience.json', 'utf-8'),
+) as ExperienceBrute[];
+const textesInvalides = trouverTextesInvalides(experiencesBrutes);
+if (textesInvalides.length > 0) {
+  throw new Error(`Données du CV invalides :\n${textesInvalides.join('\n')}`);
+}
+
+// Les PDF du CV sont générés en local (npm run cv:pdf) : le build refuse
+// des PDF qui ne correspondent plus aux sources. Le script de génération
+// construit lui-même le site, d'où l'échappatoire CV_PDF_GENERATION. Hors
+// build (astro dev, astro check), un avertissement suffit : on doit pouvoir
+// voir une modification avant de régénérer les PDF.
+if (process.env.CV_PDF_GENERATION !== '1') {
+  const attendue = calculerEmpreinte(listerSourcesCv(), (chemin) =>
+    readFileSync(chemin, 'utf-8'),
+  );
+  const enregistree = existsSync(FICHIER_EMPREINTE)
+    ? readFileSync(FICHIER_EMPREINTE, 'utf-8').trim()
+    : '';
+  if (enregistree !== attendue) {
+    const message = 'PDF du CV périmé : lancez npm run cv:pdf';
+    if (process.argv.includes('build')) throw new Error(message);
+    console.warn(message);
+  }
+}
 
 const horsLangue = findArticlesHorsLangue('./src/content/blog');
 if (horsLangue.length > 0) {
@@ -55,15 +92,76 @@ const projects = defineCollection({
   }),
 });
 
+const mission = z.object({
+  client: z.string().min(1),
+  role: localizedText.optional(),
+  featured: z.boolean(),
+  // Facultatives : une mission sans date affiche la période du poste porteur.
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
+  year: z.number().int().optional(),
+  achievements: z.array(localizedText).min(1),
+  stack: z.array(z.string()),
+});
+
 const experience = defineCollection({
   loader: file('src/data/experience.json'),
   schema: z.object({
     role: localizedText,
-    organization: z.string(),
+    organization: z.string().min(1),
     startDate: z.coerce.date(),
     endDate: z.coerce.date().optional(),
-    description: localizedText,
+    summary: localizedText,
+    achievements: z.array(localizedText),
+    stack: z.array(z.string()),
+    missions: z.array(mission),
   }),
 });
 
-export const collections = { blogFr, blogEn, projects, experience };
+const offers = defineCollection({
+  loader: file('src/data/offers.json'),
+  schema: z.object({
+    order: z.number().int(),
+    title: localizedText,
+    method: localizedText,
+    proof: z
+      .object({ text: localizedText, href: z.string().optional() })
+      .optional(),
+  }),
+});
+
+const skills = defineCollection({
+  loader: file('src/data/skills.json'),
+  schema: z.object({
+    order: z.number().int(),
+    label: localizedText,
+    items: z.array(z.union([z.string(), localizedText])),
+  }),
+});
+
+const education = defineCollection({
+  loader: file('src/data/education.json'),
+  schema: z.object({
+    diploma: localizedText,
+    school: z.string(),
+    city: z.string(),
+    startYear: z.number().int(),
+    endYear: z.number().int(),
+  }),
+});
+
+const engagements = defineCollection({
+  loader: file('src/data/engagements.json'),
+  schema: z.object({ text: localizedText, href: z.url().optional() }),
+});
+
+export const collections = {
+  blogFr,
+  blogEn,
+  projects,
+  experience,
+  offers,
+  skills,
+  education,
+  engagements,
+};

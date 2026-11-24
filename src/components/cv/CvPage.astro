@@ -1,0 +1,133 @@
+---
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../i18n/ui';
+import { useTranslations } from '../../i18n/utils';
+import { formaterPeriode } from '../../cv/periode';
+import CvHero from './CvHero.astro';
+import OfferList from './OfferList.astro';
+import MissionCard from './MissionCard.astro';
+import SkillGroups from './SkillGroups.astro';
+import TimelineItem from '../TimelineItem.astro';
+import CvPrintHeader from './CvPrintHeader.astro';
+import '../../styles/cv.css';
+import '../../styles/cv-print.css';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const parOrdre = <T extends { data: { order: number } }>(a: T, b: T) =>
+  a.data.order - b.data.order;
+
+const experiences = (await getCollection('experience')).sort(
+  (a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf(),
+);
+const offers = (await getCollection('offers')).sort(parOrdre);
+const skills = (await getCollection('skills')).sort(parOrdre);
+const education = (await getCollection('education')).sort(
+  (a, b) => b.data.endYear - a.data.endYear,
+);
+const engagements = await getCollection('engagements');
+
+// Une mission sans date n'affiche pas de période (celle du poste serait
+// prise pour sa durée) ; « via » nomme l'employeur, sauf en freelance.
+const missionsPhares = experiences
+  .flatMap(({ data: poste }) =>
+    poste.missions
+      .filter((mission) => mission.featured)
+      .map((mission) => ({
+        mission,
+        via:
+          poste.organization === 'Freelance' ? undefined : poste.organization,
+        periode: formaterPeriode(lang, mission),
+        tri:
+          mission.startDate?.valueOf() ??
+          (mission.year
+            ? new Date(mission.year, 0).valueOf()
+            : poste.startDate.valueOf()),
+      })),
+  )
+  .sort((a, b) => b.tri - a.tri);
+---
+
+<CvPrintHeader />
+<CvHero lang={lang} />
+
+<section class="cv-section">
+  <h2>{t('cv.offers')}</h2>
+  <OfferList offers={offers} lang={lang} />
+</section>
+
+<section class="cv-section">
+  <h2>{t('cv.missions')}</h2>
+  {
+    missionsPhares.map(({ mission, via, periode }) => (
+      <MissionCard
+        client={mission.client}
+        role={mission.role?.[lang]}
+        periode={periode}
+        via={via}
+        achievements={mission.achievements.map((item) => item[lang])}
+        stack={mission.stack}
+        lang={lang}
+      />
+    ))
+  }
+</section>
+
+<section class="cv-section">
+  <h2>{t('cv.path')}</h2>
+  {
+    experiences.map(({ data }) => (
+      <TimelineItem
+        role={data.role[lang]}
+        organization={data.organization}
+        startDate={data.startDate}
+        endDate={data.endDate}
+        description={data.summary[lang]}
+        achievements={data.achievements.map((item) => item[lang])}
+        stack={data.stack}
+        lang={lang}
+      />
+    ))
+  }
+</section>
+
+<section class="cv-section">
+  <h2>{t('cv.skills')}</h2>
+  <SkillGroups skills={skills} lang={lang} />
+</section>
+
+<section class="cv-section">
+  <h2>{t('cv.education')}</h2>
+  <ul class="cv-list">
+    {
+      education.map(({ data }) => (
+        <li>
+          <strong>{data.diploma[lang]}</strong> — {data.school},{' '}
+          {data.startYear}–{data.endYear}
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<section class="cv-section">
+  <h2>{t('cv.engagements')}</h2>
+  <ul class="cv-list">
+    {
+      engagements.map(({ data }) => (
+        <li>
+          {data.href ? (
+            <a href={data.href}>{data.text[lang]}</a>
+          ) : (
+            data.text[lang]
+          )}
+        </li>
+      ))
+    }
+  </ul>
+</section>

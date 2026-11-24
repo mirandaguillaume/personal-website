@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '../i18n/ui';
+import { formaterPeriode } from '../cv/periode';
 
 interface Props {
   role: string;
@@ -7,26 +8,36 @@ interface Props {
   startDate: Date;
   endDate?: Date;
   description: string;
+  achievements?: string[];
+  stack?: string[];
   lang: Lang;
 }
 
-const { role, organization, startDate, endDate, description, lang } =
-  Astro.props;
-const locale = lang === 'fr' ? 'fr-FR' : 'en-US';
-const formatOptions: Intl.DateTimeFormatOptions = {
-  year: 'numeric',
-  month: 'long',
-};
-const startLabel = startDate.toLocaleDateString(locale, formatOptions);
-const endLabel = endDate
-  ? endDate.toLocaleDateString(locale, formatOptions)
-  : lang === 'fr'
-    ? "Aujourd'hui"
-    : 'Present';
+const {
+  role,
+  organization,
+  startDate,
+  endDate,
+  description,
+  achievements = [],
+  stack = [],
+  lang,
+} = Astro.props;
+const periode = formaterPeriode(lang, { startDate, endDate });
 ---
 
 <div class="timeline-item">
   <h3>{role} — {organization}</h3>
-  <p class="article-card__date">{startLabel} – {endLabel}</p>
+  <p class="article-card__date">{periode}</p>
   <p>{description}</p>
+  {
+    achievements.length > 0 && (
+      <ul>
+        {achievements.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )
+  }
+  {stack.length > 0 && <p class="cv-stack">{stack.join(' · ')}</p>}
 </div>

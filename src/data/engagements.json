@@ -1,0 +1,17 @@
+[
+  {
+    "id": "afup",
+    "text": {
+      "fr": "Membre de l'antenne AFUP Paris depuis 2023",
+      "en": "Member of the AFUP Paris chapter since 2023"
+    }
+  },
+  {
+    "id": "conference",
+    "text": {
+      "fr": "Conférence sur le mutation testing à l'AFUP Paris, accueillie par Dayuse",
+      "en": "Talk on mutation testing at AFUP Paris, hosted by Dayuse"
+    },
+    "href": "https://mirandaguillaume.github.io/mutation-testing/"
+  }
+]

@@ -2,69 +2,258 @@
   {
     "id": "freelance",
     "role": {
-      "fr": "Développeur web freelance",
-      "en": "Freelance web developer"
+      "fr": "Développeur backend PHP senior",
+      "en": "Senior PHP backend developer"
     },
-    "organization": "Indépendant",
-    "startDate": "2023-11-01",
-    "description": {
-      "fr": "En mission chez Edenred depuis août 2025, en tant que développeur full-stack.",
-      "en": "On assignment at Edenred since August 2025, as a full-stack developer."
-    }
+    "organization": "Freelance",
+    "startDate": "2024-03-01",
+    "summary": {
+      "fr": "Missions en freelance sur des applications PHP/Symfony existantes.",
+      "en": "Freelance assignments on existing PHP/Symfony applications."
+    },
+    "achievements": [],
+    "stack": [],
+    "missions": [
+      {
+        "client": "Edenred",
+        "role": {
+          "fr": "Développeur full-stack",
+          "en": "Full-stack developer"
+        },
+        "featured": true,
+        "startDate": "2025-08-01",
+        "achievements": [
+          {
+            "fr": "Évolution de leur PIM",
+            "en": "Evolution of their PIM"
+          },
+          {
+            "fr": "Refonte du système de push des notifications de modification des produits",
+            "en": "Redesign of the push system for product change notifications"
+          },
+          {
+            "fr": "Migration des systèmes de données vers OpenSearch",
+            "en": "Migration of the data systems to OpenSearch"
+          },
+          {
+            "fr": "Migration de RabbitMQ vers Kafka",
+            "en": "Migration from RabbitMQ to Kafka"
+          },
+          {
+            "fr": "Traitement des problèmes de performance",
+            "en": "Performance troubleshooting"
+          },
+          {
+            "fr": "Mise en place de workflows IA pour les tests E2E filmés",
+            "en": "AI workflows for recorded end-to-end tests"
+          },
+          {
+            "fr": "Développement de nouvelles fonctionnalités",
+            "en": "New feature development"
+          }
+        ],
+        "stack": [
+          "PHP",
+          "Symfony",
+          "Akeneo PIM",
+          "OpenSearch",
+          "RabbitMQ",
+          "Kafka"
+        ]
+      },
+      {
+        "client": "Bluspark",
+        "featured": true,
+        "year": 2024,
+        "achievements": [
+          {
+            "fr": "Ajout d'un système de génération de factures pour la gestion des déchets de la ville de Rennes",
+            "en": "Added an invoice generation system for the City of Rennes' waste management"
+          }
+        ],
+        "stack": []
+      }
+    ]
   },
   {
     "id": "singulart",
-    "role": { "fr": "Développeur back-end", "en": "Back-end developer" },
+    "role": {
+      "fr": "Développeur backend PHP",
+      "en": "PHP backend developer"
+    },
     "organization": "Singulart",
     "startDate": "2022-07-01",
     "endDate": "2023-12-01",
-    "description": {
-      "fr": "RabbitMQ, gestion de base de données, et plus.",
-      "en": "RabbitMQ, database management, and more."
-    }
+    "summary": {
+      "fr": "Évolutions continues d'un code propre, de la recherche jusqu'à l'après-vente.",
+      "en": "Continuous evolution of a clean codebase, from search to after-sales."
+    },
+    "achievements": [
+      {
+        "fr": "Évolutions pour améliorer la satisfaction client après l'achat",
+        "en": "Improvements to post-purchase customer satisfaction"
+      },
+      {
+        "fr": "Évolutions pour mieux convertir les visiteurs sur la recherche et le tunnel d'achat",
+        "en": "Improvements to visitor conversion on search and checkout"
+      },
+      {
+        "fr": "Création d'une recherche par IA utilisant DALL·E",
+        "en": "AI-powered search built on DALL·E"
+      },
+      {
+        "fr": "Deux nouvelles options de livraison dans le tunnel d'achat",
+        "en": "Two new delivery options in checkout"
+      },
+      {
+        "fr": "Mise en place de tests fonctionnels avec Behat",
+        "en": "Functional test suite with Behat"
+      }
+    ],
+    "stack": ["PHP", "Symfony", "Cypress", "MySQL", "Elasticsearch", "OpenAI"],
+    "missions": []
   },
   {
     "id": "worldia",
-    "role": { "fr": "Développeur backend", "en": "Backend developer" },
+    "role": {
+      "fr": "Développeur backend PHP",
+      "en": "PHP backend developer"
+    },
     "organization": "Worldia",
     "startDate": "2021-10-01",
     "endDate": "2022-05-01",
-    "description": {
-      "fr": "RabbitMQ, gestion de base de données, et plus.",
-      "en": "RabbitMQ, database management, and more."
-    }
+    "summary": {
+      "fr": "Corrections et évolutions sur un code propre en évolution constante, pour la satisfaction client après l'achat.",
+      "en": "Bug fixes and improvements on a clean, constantly evolving codebase, for post-purchase customer satisfaction."
+    },
+    "achievements": [],
+    "stack": ["PHP", "Symfony", "PHPSpec", "MySQL", "GitLab"],
+    "missions": []
   },
   {
     "id": "hr-team-group",
-    "role": { "fr": "Développeur web", "en": "Web developer" },
-    "organization": "HR Team Group",
+    "role": {
+      "fr": "Développeur backend PHP",
+      "en": "PHP backend developer"
+    },
+    "organization": "HR Team",
     "startDate": "2019-01-01",
     "endDate": "2021-11-01",
-    "description": {
-      "fr": "RabbitMQ, gestion de base de données, et plus.",
-      "en": "RabbitMQ, database management, and more."
-    }
+    "summary": {
+      "fr": "Missions en ESN chez plusieurs clients.",
+      "en": "Consulting firm assignments for several clients."
+    },
+    "achievements": [
+      {
+        "fr": "Accélération de l'import quotidien de plusieurs Go de données de stock via Akeneo PIM v2",
+        "en": "Faster daily import of several GB of stock data through Akeneo PIM v2"
+      },
+      {
+        "fr": "Création d'un micro-service pour accélérer la recherche sur le site 24S",
+        "en": "Micro-service to speed up search on the 24S website"
+      }
+    ],
+    "stack": [
+      "PHP",
+      "Symfony",
+      "MySQL",
+      "PostgreSQL",
+      "AWS",
+      "Elasticsearch",
+      "Algolia"
+    ],
+    "missions": [
+      {
+        "client": "Banque Palatine",
+        "featured": true,
+        "achievements": [
+          {
+            "fr": "Reprise d'un intranet bancaire écrit en PHP 4 sous Windows",
+            "en": "Took over a banking intranet written in PHP 4 on Windows"
+          },
+          {
+            "fr": "Migration vers PHP 7 et vers un nouveau serveur Linux",
+            "en": "Migration to PHP 7 and to a new Linux server"
+          },
+          {
+            "fr": "Remplacement de l'authentification, qui reposait sur ActiveX",
+            "en": "Replaced the ActiveX-based authentication"
+          }
+        ],
+        "stack": ["PHP", "Linux"]
+      }
+    ]
   },
   {
-    "id": "la-poste-telecom",
-    "role": { "fr": "Développeur web", "en": "Web developer" },
-    "organization": "La Poste TELECOM",
+    "id": "ciorane",
+    "role": {
+      "fr": "Lead dev et assistant architecte",
+      "en": "Lead developer and assistant architect"
+    },
+    "organization": "Ciorane",
     "startDate": "2016-01-01",
     "endDate": "2018-11-01",
-    "description": {
-      "fr": "Lead dev sur les web services du suivi unifié de La Poste. Devops sur l'API du Compte Client Unique de La Poste.",
-      "en": "Lead developer on La Poste's unified tracking web services. DevOps on La Poste's unified customer account API."
-    }
+    "summary": {
+      "fr": "Mission longue pour La Poste.",
+      "en": "Long-term assignment for La Poste."
+    },
+    "achievements": [],
+    "stack": [
+      "PHP",
+      "Symfony",
+      "MySQL",
+      "Couchbase",
+      "Jenkins",
+      "Gatling",
+      "Behat"
+    ],
+    "missions": [
+      {
+        "client": "La Poste",
+        "role": {
+          "fr": "Lead dev et assistant architecte",
+          "en": "Lead developer and assistant architect"
+        },
+        "featured": true,
+        "startDate": "2016-01-01",
+        "endDate": "2018-11-01",
+        "achievements": [
+          {
+            "fr": "API de suivi des 11 milliards d'objets adressés en France, avec un objectif de réponse autour de 30 ms",
+            "en": "Tracking API for the 11 billion items mailed in France, with a response target of about 30 ms"
+          },
+          {
+            "fr": "API d'aiguillage des envois entre Courrier, Chronopost et Colissimo",
+            "en": "Routing API assigning shipments to Courrier, Chronopost or Colissimo"
+          },
+          {
+            "fr": "France Connect : connexion à plus de 1 000 services en ligne",
+            "en": "France Connect: sign-in to more than 1,000 online services"
+          },
+          {
+            "fr": "Tests fonctionnels avec Behat et tests de charge avec Gatling",
+            "en": "Functional tests with Behat and load tests with Gatling"
+          }
+        ],
+        "stack": ["PHP", "Symfony", "Couchbase", "Gatling", "Behat"]
+      }
+    ]
   },
   {
     "id": "mabeaute",
-    "role": { "fr": "Développeur web", "en": "Web developer" },
+    "role": {
+      "fr": "Développeur fullstack",
+      "en": "Full-stack developer"
+    },
     "organization": "mabeaute.com",
     "startDate": "2014-04-01",
     "endDate": "2015-03-01",
-    "description": {
-      "fr": "Développeur web de la plateforme de réservation de soins de beauté à domicile en ligne.",
-      "en": "Web developer for an online platform for booking at-home beauty treatments."
-    }
+    "summary": {
+      "fr": "Versions 2 et 3 de la plateforme de réservation de soins de beauté à domicile, d'abord en stage.",
+      "en": "Versions 2 and 3 of the at-home beauty booking platform, starting as an intern."
+    },
+    "achievements": [],
+    "stack": ["PHP", "Symfony", "Twig", "MySQL"],
+    "missions": []
   }
 ]

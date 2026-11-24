@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { Lang } from '../../i18n/ui';
+import { useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+interface Props {
+  offers: CollectionEntry<'offers'>[];
+  lang: Lang;
+}
+
+const { offers, lang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<div class="cv-offers">
+  {
+    offers.map(({ data }) => (
+      <div class="article-card cv-offer">
+        <h3>{data.title[lang]}</h3>
+        <p>{data.method[lang]}</p>
+        {data.proof && (
+          <p class="cv-offer__proof">
+            <strong>{t('cv.proof')}</strong>{' '}
+            {data.proof.href ? (
+              <a
+                href={new URL(translatePath(data.proof.href), Astro.site).href}
+              >
+                {data.proof.text[lang]}
+              </a>
+            ) : (
+              data.proof.text[lang]
+            )}
+          </p>
+        )}
+      </div>
+    ))
+  }
+</div>

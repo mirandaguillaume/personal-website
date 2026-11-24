@@ -1,0 +1,24 @@
+[
+  {
+    "id": "miage",
+    "diploma": {
+      "fr": "Licence MIAGE",
+      "en": "Bachelor's degree in business computing (MIAGE)"
+    },
+    "school": "Université d'Orléans",
+    "city": "Orléans",
+    "startYear": 2013,
+    "endYear": 2014
+  },
+  {
+    "id": "dut",
+    "diploma": {
+      "fr": "DUT informatique de gestion",
+      "en": "Two-year technical degree in business computing (DUT)"
+    },
+    "school": "IUT d'Orléans",
+    "city": "Orléans",
+    "startYear": 2011,
+    "endYear": 2013
+  }
+]
